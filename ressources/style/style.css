@@ -1,0 +1,138 @@
+:root{
+    --cyan: #4CC3FF;
+    --blue-deep: #102042;
+    --black-space: #0B0B11;
+    --glass: rgba(255,255,255,0.06);
+}
+
+* {
+    box-sizing:border-box;
+}
+
+html,body{
+    height:100%;
+    margin:0;
+    font-family: Futura, "Avant Garde", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background:var(--black-space);
+    color:#eee;
+}
+
+.site-header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:50;
+    padding:18px 48px;
+    background:linear-gradient(180deg, rgba(11,11,17,0.55), rgba(11,11,17,0.2));
+    backdrop-filter: blur(4px)
+}
+
+.nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between
+}
+
+.brand{
+    font-weight:800;
+    letter-spacing:1px
+}
+
+.nav-links{
+    display:flex;
+    gap:18px;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.nav-links a{
+    color:rgba(255,255,255,0.85);
+    text-decoration:none;
+    padding:8px 10px;
+    border-radius:6px;
+    font-weight:600;
+}
+
+.nav-links a:hover{
+    background:var(--glass);
+}
+
+.hero{
+    display:grid;
+    grid-template-columns: 480px 1fr;
+    align-items:center;
+    min-height:100vh;
+    padding-top:72px;
+}
+
+.hero-left{
+    position:relative;
+    height:70vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding-left:60px
+}
+
+.hero-art{
+    max-width:420px;width:100%;height:auto;border-radius:8px;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+
+/* Right side with diagonal stripes background */
+.hero-right{height:70vh;display:flex;align-items:center}
+.hero-right::before{
+    content:"";
+    position:absolute;inset:0;z-index:-1;
+}
+.hero-content{position:relative;padding:60px 80px;margin-right:80px;max-width:720px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;box-shadow:0 12px 40px rgba(2,6,23,0.7)}
+
+h1{font-size: clamp(28px, 4.2vw, 56px);margin:0 0 12px}
+.lead{color:rgba(255,255,255,0.78);margin:0 0 20px}
+
+/* Diagonal stripes using repeating-linear-gradient for the retro bands */
+.hero-right{
+    background:
+            repeating-linear-gradient( -40deg,
+            transparent 0 22px,
+            rgba(0,0,0,0.05) 22px 24px
+            ),
+            linear-gradient( -40deg,
+                /* cyan */ var(--cyan) 0 60px,
+                /* green */ var(--green) 60px 120px,
+                /* yellow */ var(--yellow) 120px 180px,
+                /* orange */ var(--orange) 180px 240px,
+                /* red */ var(--red) 240px 300px
+            );
+    background-size: cover;
+    display:flex;align-items:center;justify-content:flex-end;position:relative;overflow:hidden;border-left:1px solid rgba(255,255,255,0.03)
+}
+
+.cta-row{display:flex;gap:14px;margin-top:18px}
+.btn{display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700;background:var(--black-space);color:var(--yellow);box-shadow:0 6px 18px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.04)}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.9)}
+
+.tags{display:flex;gap:10px;margin-top:22px;padding:0;list-style:none}
+.tags li{background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:999px;font-weight:700}
+
+.projects{padding:80px 120px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));}
+.projects h2{margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:28px;border-radius:12px;min-height:120px;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+.site-footer{padding:30px 120px;border-top:1px solid rgba(255,255,255,0.03);color:rgba(255,255,255,0.6)}
+
+/* Responsiveness */
+@media (max-width: 920px){
+    .hero{grid-template-columns: 1fr;padding-top:88px}
+    .hero-left{order:2;padding:28px}
+    .hero-right{order:1;padding:40px 24px}
+    .hero-content{margin:0;padding:36px;border-radius:10px}
+}
+
+@media (max-width:520px){
+    .nav{padding:0}
+    .nav-links{display:none}
+    .hero-art{max-width:320px}
+    .hero-content{padding:22px}
+}
