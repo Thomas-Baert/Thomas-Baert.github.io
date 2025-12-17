@@ -1,56 +1,133 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Portfolio — Accueil</title>
   <link rel="stylesheet" href="ressources/style/style.css">
 </head>
+
 <body>
-<header class="site-header">
-  <nav class="nav">
-    <div class="brand">Grand Maître — Portfolio</div>
-    <ul class="nav-links">
-      <li><a href="#work">Work</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-</header>
+  <div class="crt-container">
+    <div class="scanlines"></div>
+    <header class="site-header">
+      <nav class="nav">
+        <div class="brand">Thomas BAERT — Portfolio</div>
+        <ul class="nav-links">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
 
-<main class="hero">
-  <div class="hero-left">
-    <!-- L'image source fournie localement -->
-    <img class="hero-art" src="/mnt/data/Capture d’écran 2025-11-24 à 13.50.45.png" alt="inspiration retro" />
-  </div>
-  <div class="hero-right">
-    <div class="hero-content">
-      <h1>Design rétro — Palette inspirée</h1>
-      <p class="lead">Création d'interfaces &amp; identités visuelles mêlant rétro-futurisme 70–80s et esthétique moderne.</p>
-      <div class="cta-row">
-        <a class="btn" href="#work">Voir mes projets</a>
-        <a class="btn ghost" href="#about">En savoir plus</a>
+    <main class="hero">
+      <div class="hero-right">
+        <div class="hero-content">
+          <div class="window-controls">
+            <span class="window-btn close"></span>
+            <span class="window-btn minimize"></span>
+            <span class="window-btn maximize"></span>
+          </div>
+          <h1 class="glitch-text" data-text="Thomas BAERT — Ingénieur en formation">Thomas BAERT — Ingénieur en
+            formation</h1>
+          <p class="lead">Création d'interfaces &amp; identités visuelles mêlant rétro-futurisme et esthétique moderne.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="#work">Voir mes projets</a>
+            <a class="btn ghost" href="#about">En savoir plus</a>
+            <a class="btn ghost" href="#contact">Me contacter</a>
+          </div>
+          <ul class="tags">
+            <li>Retro-Futurism</li>
+            <li>Fallout-Style</li>
+            <li>Creative</li>
+          </ul>
+        </div>
       </div>
-      <ul class="tags">
-        <li>Retro</li>
-        <li>Gruvbox-inspired</li>
-        <li>Affiche</li>
-      </ul>
-    </div>
-  </div>
-</main>
+    </main>
 
-<section id="work" class="projects">
-  <h2>Projets récents</h2>
-  <div class="grid">
-    <article class="card">Projet 1</article>
-    <article class="card">Projet 2</article>
-    <article class="card">Projet 3</article>
-  </div>
-</section>
+    <section id="about" class="about">
+      <div class="about-container">
+        <div class="about-photo">
+          <img src="ressources/images/pp.png" alt="Thomas BAERT">
+        </div>
+        <div class="about-content">
+          <h2>À propos</h2>
+          <p>Étudiant en <strong>BUT Informatique parcours DACS</strong> (Développement d'Applications Communicantes et
+            Sécurisées) à l'IUT de Lens, j'ai 18 ans et je suis passionné par le réseau et la cybersécurité.</p>
+          <p>Mes compétences s'étendent de la <strong>programmation système</strong> (C) à la <strong>programmation
+              réseau et scripting</strong> (Python, sockets), en passant par le <strong>développement d'applications
+              IHM</strong> (Java, JavaFX), l'administration système Linux et la
+            sécurité des infrastructures. Je maîtrise également les protocoles réseau, la configuration de pare-feu et
+            l'analyse de trafic.</p>
+          <a class="btn" href="#contact">Me contacter</a>
+        </div>
+      </div>
+    </section>
 
-<footer class="site-footer">
-  <p>© 2025 — Grand Maître. All rights reserved.</p>
-</footer>
+    <section id="work" class="projects">
+      <h2>Projets récents</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="window-controls">
+            <span class="window-btn close"></span>
+            <span class="window-btn minimize"></span>
+            <span class="window-btn maximize"></span>
+          </div>
+          <h3>Pokémon TCG IHM</h3>
+          <p>Interface Homme-Machine développée en JavaFX pour un simulateur de jeu de cartes Pokémon.</p>
+          <a href="projets/Pokemon-tcg-ihm.html" class="btn small">Voir le projet</a>
+        </article>
+        <article class="card">
+          <div class="window-controls">
+            <span class="window-btn close"></span>
+            <span class="window-btn minimize"></span>
+            <span class="window-btn maximize"></span>
+          </div>
+          Projet 2
+        </article>
+        <article class="card">
+          <div class="window-controls">
+            <span class="window-btn close"></span>
+            <span class="window-btn minimize"></span>
+            <span class="window-btn maximize"></span>
+          </div>
+          Projet 3
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="contact-container">
+        <h2>Contact</h2>
+        <p class="contact-intro">N'hésitez pas à me contacter pour discuter de vos projets ou pour toute opportunité de
+          collaboration.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <span class="contact-label">Téléphone</span>
+            <a href="tel:+33626949856">+33 06 26 94 98 56</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Email</span>
+            <a href="mailto:thomas.baert2014@gmail.com">thomas.baert2014@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">LinkedIn</span>
+            <a href="https://www.linkedin.com/in/thomas-baert-077503317/" target="_blank"
+              rel="noopener noreferrer">Thomas BAERT</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>© 2025 — Thomas BAERT. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="ressources/js/app.js"></script>
 </body>
+
 </html>
