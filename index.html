@@ -13,10 +13,12 @@
     <div class="scanlines"></div>
     <header class="site-header">
       <nav class="nav">
-        <div class="brand">Thomas BAERT — Portfolio</div>
+        <a href="/">
+          <div class="brand">Thomas BAERT — Portfolio</div>
+        </a>
         <ul class="nav-links">
-          <li><a href="#work">Work</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#work">Projets</a></li>
+          <li><a href="#about">À propos</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -30,9 +32,10 @@
             <span class="window-btn minimize"></span>
             <span class="window-btn maximize"></span>
           </div>
-          <h1 class="glitch-text" data-text="Thomas BAERT — Ingénieur en formation">Thomas BAERT — Ingénieur en
-            formation</h1>
-          <p class="lead">Création d'interfaces &amp; identités visuelles mêlant rétro-futurisme et esthétique moderne.
+          <h1 class="glitch-text" data-text="Thomas BAERT — Développement & Cybersécurité">Thomas BAERT — Développement
+            & Cybersécurité</h1>
+          <p class="lead">Étudiant passionné par la défense des systèmes, l'administration réseaux et le développement
+            d'applications sécurisées au sein du parcours DACS.
           </p>
           <div class="cta-row">
             <a class="btn" href="#work">Voir mes projets</a>
@@ -40,9 +43,9 @@
             <a class="btn ghost" href="#contact">Me contacter</a>
           </div>
           <ul class="tags">
-            <li>Retro-Futurism</li>
-            <li>Fallout-Style</li>
-            <li>Creative</li>
+            <li>Cybersecurity</li>
+            <li>Network Systems</li>
+            <li>Software Dev</li>
           </ul>
         </div>
       </div>
@@ -56,7 +59,8 @@
         <div class="about-content">
           <h2>À propos</h2>
           <p>Étudiant en <strong>BUT Informatique parcours DACS</strong> (Développement d'Applications Communicantes et
-            Sécurisées) à l'IUT de Lens, j'ai 18 ans et je suis passionné par le réseau et la cybersécurité.</p>
+            Sécurisées) à l'IUT de <strong>Montpellier-Sète</strong>, j'ai 18 ans et je suis passionné par le réseau et
+            la cybersécurité.</p>
           <p>Mes compétences s'étendent de la <strong>programmation système</strong> (C) à la <strong>programmation
               réseau et scripting</strong> (Python, sockets), en passant par le <strong>développement d'applications
               IHM</strong> (Java, JavaFX), l'administration système Linux et la
@@ -65,36 +69,101 @@
           <a class="btn" href="#contact">Me contacter</a>
         </div>
       </div>
+
+      <div class="roadmap-container">
+        <h3 class="roadmap-title">Mon Parcours</h3>
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="date">2025 - 2026</span>
+              <h4>Formation BAFA</h4>
+              <p>Validation en cours du Brevet d'Aptitude aux Fonctions d'Animateur.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="date">Septembre 2025</span>
+              <h4>BIP Erasmus</h4>
+              <p>Projet collaboratif international : conception d'une solution informatique pour la problématique "Elder
+                life in an aging society".</p>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="date">2024 - Présent</span>
+              <h4>IUT Montpellier-Sète</h4>
+              <p>BUT Informatique — Spécialisation en Développement d'Applications Communicantes et Sécurisées (DACS).
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="date">2024</span>
+              <h4>Lycée Joffre Montpellier</h4>
+              <p>Baccalauréat Général — Mention Bien.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="work" class="projects">
       <h2>Projets récents</h2>
       <div class="grid">
-        <article class="card">
+        <article class="card pokemon-card" data-theme="red"
+          data-summary="Une immersion totale dans l'univers Pokémon avec cette interface développée en JavaFX. Le projet simule un jeu de cartes complet, incluant la gestion des decks, les mécaniques de combat complexes, et une architecture robuste basée sur le pattern MVC. Chaque carte Lanturn ou Dracofeu prend vie à travers des visuels soignés et des interactions fluides.">
           <div class="window-controls">
             <span class="window-btn close"></span>
             <span class="window-btn minimize"></span>
             <span class="window-btn maximize"></span>
           </div>
-          <h3>Pokémon TCG IHM</h3>
-          <p>Interface Homme-Machine développée en JavaFX pour un simulateur de jeu de cartes Pokémon.</p>
-          <a href="projets/Pokemon-tcg-ihm.html" class="btn small">Voir le projet</a>
+          <div class="card-image-wrap">
+            <img src="ressources/images/dracofeu.png" alt="Dracofeu" class="card-decor-img">
+          </div>
+          <div class="card-content">
+            <h3><strong>Pokémon TCG IHM</strong></h3>
+            <p>Interface Homme-Machine développée en JavaFX pour un simulateur de jeu de cartes Pokémon.</p>
+            <a href="projets/Pokemon-tcg-ihm.html" class="btn small">Voir le projet</a>
+          </div>
         </article>
-        <article class="card">
+        <article class="card"
+          data-summary="Analyse et visualisation de données réseau en temps réel. Un outil conçu pour les administrateurs système souhaitant surveiller leur infrastructure avec une précision millimétrée et une esthétique cybernétique.">
           <div class="window-controls">
             <span class="window-btn close"></span>
             <span class="window-btn minimize"></span>
             <span class="window-btn maximize"></span>
           </div>
-          Projet 2
+          <div class="card-content">
+            <h3><strong>Network Hub</strong></h3>
+            <p>Moniteur réseau haute performance.</p>
+            <a href="#" class="btn small">En savoir plus</a>
+          </div>
+          <div class="card-image-wrap">
+            <img src="ressources/images/placeholder_hub.png" alt="Hub" class="card-decor-img" style="opacity: 0.2">
+          </div>
         </article>
-        <article class="card">
+        <article class="card"
+          data-summary="Une plateforme de communication sécurisée bout-en-bout utilisant des algorithmes de chiffrement modernes. Pensée pour la confidentialité absolue avec une interface inspirée des terminaux de commande.">
           <div class="window-controls">
             <span class="window-btn close"></span>
             <span class="window-btn minimize"></span>
             <span class="window-btn maximize"></span>
           </div>
-          Projet 3
+          <div class="card-content">
+            <h3><strong>Secure Shell Chat</strong></h3>
+            <p>Messagerie instantanée cryptée.</p>
+            <a href="#" class="btn small">En savoir plus</a>
+          </div>
+          <div class="card-image-wrap">
+            <img src="ressources/images/placeholder_chat.png" alt="Chat" class="card-decor-img" style="opacity: 0.2">
+          </div>
         </article>
       </div>
     </section>
@@ -125,6 +194,24 @@
     <footer class="site-footer">
       <p>© 2025 — Thomas BAERT. All rights reserved.</p>
     </footer>
+  </div>
+
+  <!-- Project Summary Modal -->
+  <div id="summaryModal" class="summary-modal">
+    <span class="summary-close">&times;</span>
+    <div class="summary-container">
+      <div class="summary-banner">
+        <img id="summaryImage" src="" alt="Project Banner">
+        <div class="summary-overlay"></div>
+      </div>
+      <div class="summary-content">
+        <h2 id="summaryTitle">Project Title</h2>
+        <p id="summaryDescription">Project description goes here.</p>
+        <div class="summary-footer">
+          <a id="summaryLink" href="#" class="btn">Voir le projet</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="ressources/js/app.js"></script>

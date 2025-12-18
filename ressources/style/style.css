@@ -38,6 +38,27 @@
     --border-radius: 12px;
 }
 
+/* Global Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(94, 201, 165, 0.2);
+    border: 1px solid var(--aqua);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(94, 201, 165, 0.5);
+    box-shadow: 0 0 10px var(--aqua);
+}
+
 * {
     box-sizing: border-box;
     /* Soften edges slightly for retro feel */
@@ -289,6 +310,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.nav>a {
+    text-decoration: none;
 }
 
 .brand {
@@ -684,6 +709,178 @@ h1 {
     box-shadow: 0 0 10px var(--amber);
 }
 
+/* Roadmap Timeline */
+.roadmap-container {
+    margin-top: 100px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.roadmap-title {
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 2.8rem;
+    color: var(--amber);
+    margin-bottom: 60px;
+    text-shadow: 0 0 12px rgba(255, 182, 66, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.roadmap-container .timeline {
+    position: relative;
+    padding: 0;
+}
+
+.roadmap-container .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            var(--amber) 5%,
+            var(--aqua) 95%,
+            transparent 100%);
+    transform: translateX(-50%);
+    opacity: 0.6;
+}
+
+.roadmap-container .timeline-item {
+    width: 100%;
+    margin-bottom: 60px;
+    position: relative;
+    display: flex;
+}
+
+.roadmap-container .timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 5px;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    background: var(--bg-dark);
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+    z-index: 5;
+    box-shadow: 0 0 15px var(--amber);
+}
+
+.roadmap-container .timeline-content {
+    width: 42%;
+    padding: 25px;
+    background: rgba(30, 25, 20, 0.7);
+    border: 1px solid rgba(255, 182, 66, 0.2);
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(8px);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.roadmap-container .timeline-content:hover {
+    border-color: var(--amber);
+    box-shadow: 0 0 20px rgba(255, 182, 66, 0.2);
+    transform: scale(1.02);
+}
+
+.roadmap-container .timeline-item:nth-child(odd) {
+    justify-content: flex-start;
+}
+
+.roadmap-container .timeline-item:nth-child(even) {
+    justify-content: flex-end;
+}
+
+.roadmap-container .timeline-content h4 {
+    margin: 5px 0 10px;
+    color: var(--amber);
+    font-size: 1.4rem;
+    font-family: 'VT323', monospace;
+    letter-spacing: 1px;
+}
+
+.roadmap-container .timeline-content .date {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--aqua);
+    font-weight: 700;
+    margin-bottom: 5px;
+    font-family: 'Space Mono', monospace;
+}
+
+.roadmap-container .timeline-content p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--off-white);
+    opacity: 0.9;
+}
+
+/* Animations for Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Specific item animation offsets */
+.roadmap-container .timeline-item:nth-child(odd).reveal {
+    transform: translateX(-30px);
+}
+
+.roadmap-container .timeline-item:nth-child(even).reveal {
+    transform: translateX(30px);
+}
+
+.roadmap-container .timeline-item.visible {
+    transform: translateX(0);
+}
+
+/* Responsive adjustment for roadmap */
+@media (max-width: 992px) {
+    .roadmap-container .timeline-content {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .roadmap-container .timeline::before {
+        left: 20px;
+        transform: none;
+    }
+
+    .roadmap-container .timeline-item {
+        justify-content: flex-start !important;
+        padding-left: 45px;
+    }
+
+    .roadmap-container .timeline-dot {
+        left: 20px;
+        transform: translateX(-50%);
+    }
+
+    .roadmap-container .timeline-content {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .roadmap-container .timeline-item:nth-child(odd).reveal,
+    .roadmap-container .timeline-item:nth-child(even).reveal {
+        transform: translateY(30px);
+    }
+}
+
 .about-content p {
     font-size: 1.1rem;
     line-height: 1.8;
@@ -1046,6 +1243,19 @@ h1 {
     font-size: 0.95rem;
 }
 
+.meta-item a {
+    color: var(--aqua);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(94, 201, 165, 0.3);
+    transition: all 0.2s ease;
+}
+
+.meta-item a:hover {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+    text-shadow: 0 0 8px var(--amber);
+}
+
 .project-section {
     margin-bottom: 60px;
 }
@@ -1243,7 +1453,7 @@ h1 {
 /* Responsive Project Page */
 @media (max-width: 920px) {
     .project-page {
-        padding: 100px 40px 40px;
+        padding: 130px 40px 40px;
     }
 
     .project-header h1 {
@@ -1269,7 +1479,7 @@ h1 {
 
 @media (max-width: 520px) {
     .project-page {
-        padding: 80px 20px 40px;
+        padding: 120px 20px 40px;
     }
 
     .project-header h1 {
@@ -1328,20 +1538,20 @@ h1 {
 
 /* Specific crop for Preview system using object-fit/position */
 .preview-crop {
-    height: 400px;
+    height: 450px;
     overflow: hidden;
     position: relative;
     background: #000;
 }
 
 .preview-crop .project-img {
-    width: 200%;
-    /* Scale up */
+    width: 180%;
+    /* Balanced zoom to see full card */
     max-width: none;
     position: absolute;
-    bottom: -10%;
-    /* Adjust to see Lanturn preview */
-    right: -10%;
+    bottom: -8%;
+    /* Position to see the card at the bottom right */
+    right: -2%;
 }
 
 .preview-crop .img-caption {
@@ -1361,6 +1571,347 @@ h1 {
     }
 
     .preview-crop .project-img {
-        width: 300%;
+        width: 450%;
     }
+}
+
+/* Lightbox Modal */
+.modal {
+    display: none;
+    /* JavaScript will set this to flex */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    cursor: zoom-out;
+    /* Flexbox for centering */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 95%;
+    max-height: 85vh;
+    box-shadow: 0 0 40px rgba(94, 201, 165, 0.4);
+    border: 1px solid var(--aqua);
+    border-radius: var(--border-radius);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-caption {
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: var(--amber);
+    padding: 15px 0 0 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: var(--fg);
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2100;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: var(--amber);
+}
+
+.project-img {
+    cursor: zoom-in;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-img:hover {
+    box-shadow: 0 0 15px rgba(94, 201, 165, 0.3);
+}
+
+.code-snippet-img {
+    margin-bottom: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(230, 225, 207, 0.1);
+    background: #000;
+}
+
+.code-snippet-img .project-img {
+    width: 100%;
+    height: auto;
+}
+
+/* Pokemon TCG Red Card Redesign */
+.pokemon-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #4a0000 100%) !important;
+    border: 1px solid #b22222 !important;
+    overflow: hidden;
+    /* Masking by default */
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+    /* Match base card transition */
+}
+
+.pokemon-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 #b22222, 0 0 25px rgba(255, 77, 77, 0.6);
+    border-color: #ff4d4d !important;
+}
+
+.pokemon-card .card-content {
+    position: relative;
+    z-index: 3;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    margin-top: auto;
+}
+
+.pokemon-card h3 {
+    color: #ff4d4d !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 77, 77, 0.4);
+    margin-bottom: 10px;
+}
+
+.pokemon-card p {
+    color: #e6e1cf;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.card-image-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.card-decor-img {
+    position: absolute;
+    top: 0;
+    right: -10%;
+    width: 90%;
+    height: auto;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8));
+    opacity: 0.8;
+    z-index: 2;
+    transform: rotate(-10deg);
+}
+
+.pokemon-card .btn {
+    background: #b22222 !important;
+    border-color: #ff4d4d !important;
+    color: #fff !important;
+    box-shadow: 0 0 10px rgba(178, 34, 34, 0.3);
+}
+
+.pokemon-card .btn:hover {
+    background: #ff4d4d !important;
+    box-shadow: 0 0 20px rgba(255, 77, 77, 0.6) !important;
+}
+
+@media (max-width: 768px) {
+    .card-decor-img {
+        width: 70%;
+        right: -5%;
+    }
+}
+
+/* Summary Modal Styles */
+.summary-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+}
+
+.summary-container {
+    background: var(--bg-dark);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    border: 2px solid var(--aqua);
+    box-shadow: 0 0 30px rgba(94, 201, 165, 0.3);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlide 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes modalSlide {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.summary-banner {
+    width: 100%;
+    height: 250px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+}
+
+.summary-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    /* Capture Dracofeu's head */
+}
+
+.summary-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, var(--bg-dark));
+}
+
+.summary-content {
+    padding: 30px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.summary-content h2 {
+    font-family: 'VT323', monospace;
+    font-size: 2.5rem;
+    color: var(--amber);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 182, 66, 0.5);
+}
+
+.summary-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--fg);
+    margin-bottom: 30px;
+}
+
+.summary-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.summary-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: var(--aqua);
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2100;
+    transition: all 0.2s;
+}
+
+.summary-close:hover {
+    color: var(--amber);
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .summary-container {
+        width: 95%;
+    }
+
+    .summary-banner {
+        height: 180px;
+    }
+
+    .summary-content {
+        padding: 20px;
+    }
+
+    .summary-content h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Red Theme for Summary Modal */
+.summary-container.theme-red {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 35px rgba(178, 34, 34, 0.4);
+}
+
+.summary-container.theme-red .summary-banner {
+    background: linear-gradient(135deg, #1a1a1a 0%, #4a0000 100%);
+}
+
+.summary-container.theme-red h2 {
+    color: #ff4d4d;
+    text-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+}
+
+.summary-container.theme-red .summary-close {
+    color: #ff4d4d;
+}
+
+.summary-container.theme-red .btn {
+    background: #b22222 !important;
+    border-color: #ff4d4d !important;
+}
+
+.summary-container.theme-red .btn:hover {
+    background: #ff4d4d !important;
+    box-shadow: 0 0 20px rgba(255, 77, 77, 0.6) !important;
+}
+
+/* Red Theme Scrollbar */
+.summary-container.theme-red ::-webkit-scrollbar-thumb {
+    background: rgba(178, 34, 34, 0.3);
+    border-color: #ff4d4d;
+}
+
+.summary-container.theme-red ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 77, 77, 0.5);
+    box-shadow: 0 0 10px #ff4d4d;
 }

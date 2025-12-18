@@ -14,7 +14,7 @@
 
     <header class="site-header">
       <nav class="nav">
-        <div class="brand">Thomas BAERT — Portfolio</div>
+        <a href="/"><div class="brand">Thomas BAERT — Portfolio</div></a>
         <ul class="nav-links">
           <li><a href="../index.html#about">À propos</a></li>
           <li><a href="../index.html#work">Projets</a></li>
@@ -29,6 +29,8 @@
         <p class="project-subtitle">Interface Homme-Machine en JavaFX</p>
         <div class="project-meta">
           <span class="meta-item"><strong>Contexte :</strong> SAE S2.01 - BUT Informatique</span>
+          <span class="meta-item"><strong>Équipe :</strong> Robin CERISIER, <a href="https://louisroubaud.fr"
+              target="_blank" rel="noopener noreferrer">Louis ROUBAUD</a></span>
           <span class="meta-item"><strong>Durée :</strong> 3 semaines (mai-juin 2025)</span>
           <span class="meta-item"><strong>Technologies :</strong> JavaFX, FXML, Java, Maven, Git</span>
         </div>
@@ -232,6 +234,13 @@
     <footer class="site-footer">
       <p>© 2025 — Thomas BAERT. All rights reserved.</p>
     </footer>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div id="imageModal" class="modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImg">
+    <div id="modalCaption" class="modal-caption"></div>
   </div>
 
   <script src="../ressources/js/app.js"></script>
