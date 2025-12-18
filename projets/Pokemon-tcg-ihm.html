@@ -206,6 +206,31 @@
       </section>
 
       <section class="project-section">
+        <h2>Contribution Individuelle</h2>
+        <p>Au sein du binôme, j'ai particulièrement travaillé sur les briques fondamentales de l'affichage des cartes et la structure globale de l'interface :</p>
+        
+        <div class="tech-grid">
+          <div class="tech-card">
+            <h3>Composants & Visuel</h3>
+            <ul>
+              <li><strong>VuePokemon :</strong> Implémentation de la classe gérant l'affichage composite d'un Pokémon (Carte + États + Dégâts) via un <code>StackPane</code>.</li>
+              <li><strong>Système d'Énergies :</strong> Développement de la logique d'affichage et de placement dynamique des icônes d'énergie sur les cartes (<code>getIconeEnergie</code>).</li>
+              <li><strong>VueResultats :</strong> Création de l'interface de fin de partie.</li>
+            </ul>
+          </div>
+
+          <div class="tech-card">
+            <h3>Architecture & Logique</h3>
+            <ul>
+              <li><strong>Refactor VueDuJeu :</strong> Migration de la vue principale vers un <code>StackPane</code> pour gérer les superpositions (z-index) des différents écrans.</li>
+              <li><strong>Intégration :</strong> Développement des constructeurs de <code>VueCarte</code> et méthodes utilitaires pour la manipulation des images.</li>
+              <li><strong>Debug :</strong> Résolution des problèmes de redimensionnement et de superposition des éléments graphiques.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="project-section">
         <h2>Résultat final</h2>
         <div class="project-image-container">
           <img src="../ressources/images/finDePartie.png" alt="Écran de fin de partie Pokémon TCG" class="project-img">

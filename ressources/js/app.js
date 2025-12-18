@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("%c SYSTEM ONLINE ", "background: #5ec9a5; color: #1a1a1a; font-weight: bold; padding: 4px; border: 2px solid #e6e1cf;");
 });
 
+
 function initHackerTyper() {
     const glitchElement = document.querySelector('.glitch-text');
     if (!glitchElement) return;
@@ -24,7 +25,7 @@ function initHackerTyper() {
         glitchElement.textContent = originalText
             .split("")
             .map((letter, index) => {
-                if (letter === " ") return " ";
+                if (/\s/.test(letter)) return letter;
                 if (index < iterations) return originalText[index];
                 return letters[Math.floor(Math.random() * letters.length)];
             })
