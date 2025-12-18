@@ -36,6 +36,10 @@
     --scanline-color: rgba(20, 15, 10, 0.5);
 
     --border-radius: 12px;
+    /* Tech card subtle border color used across cards */
+    --tech-card-border: var(--bg-light);
+    /* Diagram container background (outer) — use tech card gray */
+    --diagram-container-bg: var(--tech-card-border);
 }
 
 /* Global Scrollbar Styles */
@@ -73,6 +77,9 @@ body {
     color: var(--fg);
     overflow-x: hidden;
     height: 100%;
+    scroll-padding-top: 100px;
+    /* Prevent fixed header overlap on anchor scroll */
+    scroll-behavior: smooth;
 }
 
 /* CRT & Scanline Effects */
@@ -350,7 +357,57 @@ body {
     box-shadow: 4px 4px 0 var(--orange);
 }
 
-/* Window Controls (macOS style) */
+/* Burger Menu */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 101;
+    padding: 0;
+}
+
+.burger-menu span {
+    width: 30px;
+    height: 3px;
+    background: var(--amber);
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    transform-origin: center;
+    /* Rotate around center */
+}
+
+/* 
+   Math for alignment:
+   Height 25px. 3 bars.
+   With space-around, bars are roughly at top, middle, bottom.
+   To make an X, we need them to meet in the exact middle.
+   Since absolute positioning isn't used, we translate Y to overlap.
+   Rough estimate: 
+   Top bar moves down ~8px
+   Bottom bar moves up ~8px
+   Then rotate.
+*/
+
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.burger-menu.active span:nth-child(3) {
+    /* Translate UP to meet the top bar */
+    transform: translateY(-8px) rotate(-45deg);
+}
+
 .window-controls {
     position: absolute;
     top: 15px;
@@ -670,12 +727,14 @@ h1 {
     grid-template-columns: 300px 1fr;
     gap: 60px;
     align-items: center;
+    /* Reverted to center as requested */
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .about-photo {
     position: relative;
+    /* Reverted sticky */
 }
 
 .about-photo img {
@@ -762,7 +821,9 @@ h1 {
     position: absolute;
     left: 50%;
     top: 5px;
-    transform: translateX(-50%);
+    /* Width 14px (border-box) means total width is 14px. Center is 7px. */
+    transform: none;
+    margin-left: -7px;
     width: 14px;
     height: 14px;
     background: var(--bg-dark);
@@ -1122,6 +1183,20 @@ h1 {
     opacity: 0.5;
 }
 
+/* Break earlier for clearer reading flow */
+@media (max-width: 1150px) {
+    .about-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .about-photo {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
 /* Responsive */
 @media (max-width: 920px) {
     .hero {
@@ -1137,15 +1212,12 @@ h1 {
         max-width: 100%;
     }
 
+    /* About style override handled by 1150px query now, but padding adjusts here */
     .about {
         padding: 80px 40px;
     }
 
-    .about-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        text-align: center;
-    }
+    /* .about-container grid reset redundant but harmless */
 
     .about-photo {
         max-width: 250px;
@@ -1169,6 +1241,16 @@ h1 {
 
     .nav-links {
         margin-top: 10px;
+    }
+
+    .nav-links {
+        margin-top: 10px;
+    }
+
+    .hero {
+        /* Increase padding to account for taller stacked navbar */
+        padding-top: 180px;
+        padding-bottom: 60px;
     }
 
     .hero-content {
@@ -1396,6 +1478,28 @@ h1 {
     margin-top: 30px;
 }
 
+/* Centered small-grid for 2-3 cards with fixed min width similar to project cards */
+.tech-grid.centered-cards {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* Force three columns on wide screens for pages that want three tech cards in a row */
+.tech-grid.three-cols {
+    grid-template-columns: repeat(3, minmax(260px, 1fr));
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+@media (max-width: 900px) {
+    .tech-grid.three-cols {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
 .tech-card {
     background: var(--bg-light);
     padding: 30px;
@@ -1512,6 +1616,86 @@ h1 {
     padding: 15px;
     border-radius: var(--border-radius);
     box-shadow: inset 0 0 0 2px rgba(94, 201, 165, 0.2);
+}
+
+/* Diagram-specific container: white background and full-width */
+.diagram-container {
+    /* Outer container: use light background and tech-card inset border */
+    background: var(--bg-light);
+    /* Use retro monospace heading font & amber accent for container text */
+    font-family: 'VT323', monospace;
+    color: var(--amber);
+    padding: 18px;
+    /* Use the same subtle inset border as tech cards */
+    box-shadow: inset 0 0 0 2px var(--tech-card-border), 0 6px 18px rgba(0,0,0,0.12);
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.diagram-container:hover {
+    /* Keep subtle inset border on hover; remove outer glow/colour animation */
+    box-shadow: inset 0 0 0 2px var(--amber);
+    transform: translateY(-5px);
+}
+
+.tech-card.diagram {
+    grid-column: 1 / -1;
+}
+
+/* Make the mermaid diagram element centered and constrained like project images */
+.diagram-container {
+    text-align: center;
+}
+
+.mermaid-wrapper {
+    /* Center any inner SVG horizontally; let SVG keep its intrinsic width up to container width */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.mermaid-wrapper svg {
+    /* Use intrinsic SVG width but prevent overflow; center with margin auto if narrower */
+    width: auto !important;
+    max-width: 100%;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid var(--tech-card-border);
+    border-radius: var(--border-radius);
+}
+
+.mermaid-wrapper svg text {
+    fill: #111 !important;
+}
+
+.diagram-container .img-caption {
+    color: #666;
+}
+
+.diagram-container .img-caption {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Match project-image-container inner padding so diagrams have same margins as images */
+.diagram-container {
+    padding: 15px;
+}
+
+/* Prevent any aqua/teal glow on hover inside diagram containers */
+.diagram-container *:hover {
+    /* Remove hover box-shadows that may add aqua glow (overrides more specific rules) */
+    box-shadow: none !important;
+}
+
+/* Ensure inner SVGs do not gain unexpected glows */
+.diagram-container .mermaid-wrapper svg {
+    box-shadow: none !important;
 }
 
 .project-img {
@@ -1747,6 +1931,57 @@ h1 {
     }
 }
 
+/* Blue (Royal) theme for RS Manager project card */
+.rs-manager-card {
+    background: linear-gradient(135deg, #0d1b2b 0%, #002a66 100%) !important;
+    border: 1px solid #224f9a !important;
+    overflow: hidden;
+    /* Masking by default */
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+}
+
+.rs-manager-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 #224f9a, 0 0 25px rgba(68, 136, 255, 0.6);
+    border-color: #79a9ff !important;
+}
+
+.rs-manager-card .card-content {
+    position: relative;
+    z-index: 3;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    margin-top: auto;
+}
+
+.rs-manager-card h3 {
+    color: #79a9ff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(68, 136, 255, 0.4);
+    margin-bottom: 10px;
+}
+
+.rs-manager-card p {
+    color: #e6e1cf;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.rs-manager-card .btn {
+    background: #224f9a !important;
+    border-color: #79a9ff !important;
+    color: #fff !important;
+    box-shadow: 0 0 10px rgba(34, 79, 154, 0.3);
+}
+
+.rs-manager-card .btn:hover {
+    background: #79a9ff !important;
+    box-shadow: 0 0 20px rgba(68, 136, 255, 0.6) !important;
+}
+
 /* Summary Modal Styles */
 .summary-modal {
     display: none;
@@ -1914,4 +2149,99 @@ h1 {
 .summary-container.theme-red ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 77, 77, 0.5);
     box-shadow: 0 0 10px #ff4d4d;
+}
+
+/* Blue (Royal) theme for Summary Modal (RS Manager) */
+.summary-container.theme-blue {
+    border-color: #224f9a;
+    box-shadow: 0 0 35px rgba(34, 79, 154, 0.4);
+}
+
+.summary-container.theme-blue .summary-banner {
+    background: linear-gradient(135deg, #0d1b2b 0%, #002a66 100%);
+}
+
+.summary-container.theme-blue h2 {
+    color: #79a9ff;
+    text-shadow: 0 0 10px rgba(68, 136, 255, 0.4);
+}
+
+.summary-container.theme-blue .summary-close {
+    color: #79a9ff;
+}
+
+.summary-container.theme-blue .btn {
+    background: #224f9a !important;
+    border-color: #79a9ff !important;
+}
+
+.summary-container.theme-blue .btn:hover {
+    background: #79a9ff !important;
+    box-shadow: 0 0 20px rgba(68, 136, 255, 0.6) !important;
+}
+
+.summary-container.theme-blue ::-webkit-scrollbar-thumb {
+    background: rgba(34, 79, 154, 0.3);
+    border-color: #224f9a;
+}
+
+.summary-container.theme-blue ::-webkit-scrollbar-thumb:hover {
+    background: rgba(121, 169, 255, 0.5);
+    box-shadow: 0 0 10px #79a9ff;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .burger-menu {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 70%;
+        height: 100vh;
+        background: rgba(18, 16, 14, 0.98);
+        backdrop-filter: blur(10px);
+        padding-top: 80px;
+        z-index: 100;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+        border-left: 2px solid var(--amber);
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-links.active {
+        display: flex;
+        transform: translateX(0);
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(230, 225, 207, 0.1);
+    }
+
+    /* Fix mobile timeline dot alignment specifically */
+    .roadmap-container .timeline-dot {
+        left: 20px;
+        margin-left: -7px;
+        /* Keep consistent centering offset relative to left:20px */
+        transform: none;
+    }
+
+    /* Ensure bar is exactly at 20px center */
+    .roadmap-container .timeline::before {
+        left: 20px;
+        transform: none;
+    }
+
+    .roadmap-container .timeline-dot {
+        left: 21px;
+        /* Center alignment adjustment for mobile */
+    }
 }

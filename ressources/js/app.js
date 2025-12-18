@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLightbox();
     initProjectSummaryModal();
     initScrollReveal();
+    initBurgerMenu();
 
     // Console Easter Egg
     console.log("%c SYSTEM ONLINE ", "background: #5ec9a5; color: #1a1a1a; font-weight: bold; padding: 4px; border: 2px solid #e6e1cf;");
@@ -45,20 +46,56 @@ function initLightbox() {
     const captionText = document.getElementById('modalCaption');
     const closeBtn = document.querySelector('.modal-close');
 
+    // Keep track of any temporary object URLs we create for SVG diagrams
+    let currentObjectURL = null;
+
     images.forEach(img => {
-        // Don't add lightbox to images inside crop containers if you want, 
-        // but here we allow all for best visibility.
-        img.onclick = function () {
-            modal.style.display = "flex";
-            modalImg.src = this.src;
-            captionText.innerHTML = this.alt;
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        // For regular images (img elements), src is available
+        if (img.tagName && img.tagName.toLowerCase() === 'img') {
+            img.onclick = function () {
+                modal.style.display = "flex";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt || this.getAttribute('data-caption') || '';
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
         }
+    });
+
+    // Also support Mermaid diagrams: mermaid renders an <svg> inside the mermaid container.
+    const mermaidWrappers = document.querySelectorAll('.mermaid-wrapper');
+    mermaidWrappers.forEach(wrapper => {
+        wrapper.style.cursor = 'zoom-in';
+        wrapper.addEventListener('click', () => {
+            const svg = wrapper.querySelector('svg');
+            if (!svg) return; // not rendered yet
+
+            // Serialize SVG to a Blob and create an object URL so we can set it on the <img>
+            const serializer = new XMLSerializer();
+            let svgString = serializer.serializeToString(svg);
+
+            // Ensure xmlns attribute is present
+            if (!svgString.includes('xmlns=')) {
+                svgString = svgString.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+
+            const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            if (currentObjectURL) URL.revokeObjectURL(currentObjectURL);
+            currentObjectURL = URL.createObjectURL(blob);
+
+            modal.style.display = "flex";
+            modalImg.src = currentObjectURL;
+            captionText.innerHTML = wrapper.parentElement.querySelector('.img-caption')?.textContent || '';
+            document.body.style.overflow = 'hidden';
+        });
     });
 
     const closeModal = () => {
         modal.style.display = "none";
         document.body.style.overflow = 'auto';
+        if (currentObjectURL) {
+            URL.revokeObjectURL(currentObjectURL);
+            currentObjectURL = null;
+        }
     };
 
     if (closeBtn) closeBtn.onclick = closeModal;
@@ -157,4 +194,34 @@ function initScrollReveal() {
     });
 
     revealElements.forEach(el => observer.observe(el));
+}
+
+function initBurgerMenu() {
+    const burger = document.querySelector('.burger-menu');
+    const nav = document.querySelector('.nav-links');
+    const navLinks = document.querySelectorAll('.nav-links li');
+
+    if (!burger) return;
+
+    burger.addEventListener('click', () => {
+        // Toggle Nav
+        nav.classList.toggle('active');
+        burger.classList.toggle('active');
+
+        // Toggle scroll
+        if (nav.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Close when clicking a link
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('active');
+            burger.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
 }

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet RS Manager - Thomas BAERT</title>
+    <link rel="stylesheet" href="../ressources/style/style.css">
+</head>
+
+<body>
+    <div class="crt-container">
+        <div class="scanlines"></div>
+
+        <header class="site-header">
+            <nav class="nav">
+                <a href="/">
+                    <div class="brand">Thomas BAERT — Portfolio</div>
+                </a>
+                <div class="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="../index.html#about">À propos</a></li>
+                    <li><a href="../index.html#work">Projets</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="project-page">
+            <div class="project-header">
+                <h1>Projet RS Manager</h1>
+                <p class="project-subtitle">Command & Control (C2) Asyncio</p>
+                <div class="project-meta">
+                    <span class="meta-item"><strong>Contexte :</strong> Projet Personnel</span>
+                    <span class="meta-item"><strong>Rôle :</strong> Développeur Fullstack (Python)</span>
+                    <span class="meta-item"><strong>Technologies :</strong> Python, Asyncio, TCP Sockets, JSON</span>
+                </div>
+            </div>
+
+            <section class="project-section">
+                <h2>Contexte du projet</h2>
+                <p><strong>rs_manager</strong> est un système de "Command & Control" (C2) léger, développé pour explorer
+                    les mécanismes profonds de la programmation réseau. L'objectif était de sortir des frameworks web
+                    classiques pour construire une architecture client-serveur robuste "from scratch" utilisant des
+                    sockets bruts.</p>
+                <p>Contrairement aux solutions traditionnelles reposant sur des bases de données lourdes, ce projet
+                    opère entièrement en <strong>mémoire vive (RAM)</strong>, privilégiant la volatilité, la discrétion
+                    et la performance immédiate pour l'administration d'un parc de machines.</p>
+            </section>
+
+            <section class="project-section">
+                <h2>Architecture Système</h2>
+                <p>L'application repose sur une architecture asynchrone utilisant la bibliothèque standard
+                    <code>asyncio</code> de Python, permettant de gérer simultanément de multiples connexions sans
+                    blocage.
+                </p>
+
+                <!-- Diagrams area (kept above the tech cards) -->
+                <div class="diagrams-area">
+                    <div class="project-image-container diagram-container">
+                        <h3>Diagramme de Séquence</h3>
+                        <p class="img-caption">Flux d'exécution d'une commande, de l'admin vers le bot.</p>
+                        <div class="mermaid-wrapper project-img">
+                            <div class="mermaid">
+sequenceDiagram
+participant Admin as Administrateur
+participant Server as Serveur
+participant Bot as Client
+participant Shell as Shell
+
+Note over Server: écoute sur port 12008
+
+Bot->>Server: connexion TCP (reverse shell)
+activate Server
+Server-->>Bot: acquittement (session init)
+Note right of Server: session enregistrée en RAM
+
+Admin->>Server: list
+Server-->>Admin: table des sessions [id, ip, port]
+
+Admin->>Server: select 1
+Server-->>Admin: session 1 sélectionnée
+
+Admin->>Server: exec whoami
+Note right of Server: encapsulation JSON: type=exec
+
+Server->>Bot: envoi paquet + EOM
+activate Bot
+Bot->>Shell: whoami -> stdin
+Shell-->>Bot: root (stdout)
+
+Bot->>Server: result: root
+deactivate Bot
+
+Server-->>Admin: affiche root
+deactivate Server
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-image-container diagram-container">
+                        <h3>Architecture Logicielle</h3>
+                        <p class="img-caption">Diagramme de classes simplifié montrant le polymorphisme.</p>
+                        <div class="mermaid-wrapper project-img">
+                            <pre class="mermaid">
+classDiagram
+class Core {
+    +start_server()
+    +session_manager : Manager
+}
+
+class Manager {
+    -sessions : List~Session~
+    -commands : Dict
+    +active_session : Session
+    +broadcast(cmd)
+    +exec(cmd)
+    +select(id)
+}
+
+class Session {
+    +reader : StreamReader
+    +writer : StreamWriter
+    +ip : str
+    +port : int
+    +send(msg)
+    +recv()
+}
+
+class Request {
+    +type : str
+    +data : dict
+    +send(session)
+}
+
+class Exec {
+    +command : str
+}
+
+class Upload {
+    +filename : str
+    +content : bytes
+}
+
+Core --> Manager : possède
+Manager o-- Session : gère
+Manager ..> Request : instancie
+Request <|-- Exec : hérite
+Request <|-- Upload : hérite
+                            </pre>
+                        </div>
+                    </div>
+
+                    <ul class="diagram-notes">
+                        <li><strong>Boucle d'événements :</strong> Gestion non-bloquante des I/O (<code>asyncio</code>) pour supporter de multiples connexions.</li>
+                        <li><strong>Console Admin :</strong> Interface CLI pour piloter les sessions et envoyer des commandes.</li>
+                        <li><strong>State-less (RAM) :</strong> Toutes les sessions et l'état sont maintenus en mémoire pour une empreinte minimale.</li>
+                    </ul>
+                </div>
+
+                <!-- Three tech cards on one row (Server C2, Agent, Protocole) -->
+                <div class="tech-grid three-cols">
+                    <div class="tech-card">
+                        <h3>Serveur (C2)</h3>
+                        <ul>
+                            <li><strong>Asyncio Server :</strong> Écoute et gestion d'un event loop pour multi-connections.</li>
+                            <li><strong>Gestion des sessions :</strong> Table en mémoire des sessions [id, ip, port].</li>
+                            <li><strong>Console Admin :</strong> Interface CLI pour sélectionner et piloter les sessions.</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-card">
+                        <h3>L'Agent (Client)</h3>
+                        <ul>
+                            <li><strong>Reverse Shell :</strong> Connexion sortante vers le serveur pour contourner le NAT/Pare-feu.</li>
+                            <li><strong>Persistance de contexte :</strong> Un sous-processus shell maintenu en vie permet de garder l'état (ex: <code>cd /tmp</code> est mémorisé pour la commande suivante).</li>
+                            <li><strong>Discrétion :</strong> Empreinte minimale sur le système hôte.</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-card">
+                        <h3>Protocole de Communication</h3>
+                        <ul>
+                            <li><strong>Sockets TCP Bruts :</strong> Pas de HTTP/HTTPS, communication bas niveau.</li>
+                            <li><strong>Encapsulation JSON :</strong> Structure des commandes (<code>id</code>, <code>type</code>, <code>data</code>) pour la flexibilité.</li>
+                            <li><strong>Délimiteurs :</strong> Utilisation de marqueurs <code>EOM</code> pour gérer la fragmentation TCP.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <script type="module">
+                import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+                mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+            </script>
+
+            <section class="project-section">
+                <h2>Fonctionnalités Clés</h2>
+                <ul class="feature-list">
+                    <li><strong>Administration Centralisée :</strong> Visualisation et sélection des "bots" connectés
+                        via une table de session dynamique.</li>
+                    <li><strong>Exécution de Commandes :</strong> Envoi de commandes shell arbitraires et récupération
+                        du flux standard (stdout/stderr) en temps réel.</li>
+                    <li><strong>Système de Fichiers :</strong> Upload et Download de fichiers binaire/texte via le canal
+                        TCP établi.</li>
+                    <li><strong>Polymorphisme :</strong> Architecture code orientée objet avec une classe abstraite
+                        <code>Request</code> dérivée en <code>Exec</code>, <code>Upload</code>, etc.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="project-section">
+                <h2>Défis Techniques & Apprentissages</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Programmation Asynchrone</h3>
+                            <span class="timeline-date">Core Architecture</span>
+                            <p>Maîtrise de l'<strong>Event Loop</strong> Python et du modèle de "cooperative
+                                multitasking". Comprendre comment <code>await</code> suspend l'exécution pour laisser la
+                                main à d'autres clients connectés, permettant à un seul thread de gérer des dizaines de
+                                connexions.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Gestion des Sockets</h3>
+                            <span class="timeline-date">Protocole</span>
+                            <p>Implémentation d'un buffer de lecture robuste. Sur TCP, les données arrivent par flux
+                                (streams) et non par paquets discrets. Il a fallu gérer la concaténation et le découpage
+                                des messages via des délimiteurs propriétaires.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Interaction Système</h3>
+                            <span class="timeline-date">Système</span>
+                            <p>Utilisation avancée du module <code>subprocess</code> pour manipuler les pipes
+                                (stdin/stdout) d'un shell système de manière programmatique, simulant une véritable
+                                interaction utilisateur.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="project-footer">
+                <a href="../index.html#work" class="btn">← Retour aux projets</a>
+                <a href="../index.html#contact" class="btn ghost">Me contacter</a>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <p>© 2025 — Thomas BAERT. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Lightbox Modal (si besoin d'images futures) -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div id="modalCaption" class="modal-caption"></div>
+    </div>
+
+    <script src="../ressources/js/app.js"></script>
+</body>
+
+</html>
