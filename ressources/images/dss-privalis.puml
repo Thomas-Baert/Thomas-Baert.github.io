@@ -1,0 +1,60 @@
+@startuml
+skinparam backgroundColor white
+skinparam sequence {
+    ArrowColor #333333
+    LifeLineBorderColor #333333
+    LifeLineBackgroundColor #F0F0F0
+    
+    ParticipantBackgroundColor #FFFFFF
+    ParticipantBorderColor #333333
+    ParticipantFontColor #000000
+    
+    ActorBackgroundColor #FFFFFF
+    ActorBorderColor #333333
+    ActorFontColor #000000
+    
+    NoteBackgroundColor #FEFEE2
+    NoteBorderColor #333333
+    NoteFontColor #000000
+    
+    DividerBackgroundColor #F0F0F0
+    DividerBorderColor #333333
+    DividerFontColor #333333
+}
+skinparam Shadowing false
+skinparam DefaultFontName "Space Mono"
+
+participant "Enchérisseur (Bi)" as Bi
+participant "Serveur (S)" as S
+participant "Autorité (A)" as A
+
+== PHASE 1 : ENCHÈRE ==
+
+Bi -> Bi : Chiffre prix bi pour A (ci)
+Bi -> Bi : Signe ci (σi)
+Bi -> S : Envoie {ci, σi} (SSL/TLS)
+activate S
+S -> S : Vérifie signature σi
+S -> S : Ordonne {ci} (Lexicographique)
+S -> S : Calcule Signature z de l'ensemble
+S -> Bi : Broadcast {ci, Σi}, z
+deactivate S
+Bi -> Bi : Vérifie z et sa présence ci
+
+== PHASE 2 : OUVERTURE ==
+
+A -> A : Vérifie signatures Σi et z
+activate A
+A -> A : Déchiffre ci -> bi
+A -> A : Calcule Second Prix X2
+A -> S : Envoie X2 + Signature(X2, {ci})
+deactivate A
+activate S
+S -> S : Vérifie signature
+S -> Bi : Broadcast (X2, z, z')
+deactivate S
+Bi -> Bi : Vérifie z' (même {ci} que z)
+
+A -> S : Indique iω (vainqueur chiffré X1)
+S -> S : Identifie et déclare Vainqueur
+@enduml

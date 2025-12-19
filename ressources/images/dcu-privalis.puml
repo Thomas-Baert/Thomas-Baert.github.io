@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam roundCorner 10
+skinparam Shadowing false
+skinparam backgroundColor white
+skinparam ArrowColor #333333
+skinparam UsecaseBackgroundColor #FFFFFF
+skinparam UsecaseBorderColor #333333
+skinparam UsecaseFontColor #000000
+skinparam ActorBackgroundColor #FFFFFF
+skinparam ActorBorderColor #333333
+skinparam ActorFontColor #000000
+
+actor "Enchérisseur" as User
+actor "Administrateur" as Admin
+actor "Autorité" as AC <<Secondary>>
+
+rectangle "Système Privalis" {
+  usecase "S'inscrire / Se connecter" as UC1
+  usecase "Consulter les ventes" as UC2
+  usecase "Déposer une enchère chiffrée" as UC3
+  usecase "Créer une annonce" as UC4
+  usecase "Gérer les enchérisseurs" as UC5
+  usecase "Clôturer une session" as UC6
+}
+
+User -- UC1
+User -- UC2
+User -- UC3
+User -- UC4
+
+Admin -- UC5
+Admin -- UC6
+
+UC3 -- AC
+@enduml

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Portfolio — Accueil</title>
   <link rel="stylesheet" href="ressources/style/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>
@@ -84,7 +85,10 @@
             système Linux et la sécurité des infrastructures. Je maîtrise également les protocoles réseau,
             la configuration de pare-feu et l'analyse de trafic. C'est afin de me spécialiser en systèmes et réseaux
             que j'ai choisi de suivre la spécialisation en DACS.</p>
-          <a class="btn" href="#contact">Me contacter</a>
+          <div class="cta-row">
+            <a class="btn" href="#contact"><i class="fas fa-paper-plane"></i> Me contacter</a>
+            <button id="openCV" class="btn ghost"><i class="fas fa-eye"></i> Consulter CV</button>
+          </div>
         </div>
       </div>
 
@@ -167,6 +171,23 @@
             <img src="ressources/images/rs-manager.png" alt="Terminal" class="card-decor-img" style="opacity: 0.2">
           </div>
         </article>
+        <article class="card privalis-card" data-theme="cyan"
+          data-summary="Application d'enchères sécurisée de bout en bout. Architecture Java/Oracle avec protocole de signature RSA et communications SSL/TLS pour garantir l'intégrité et la confidentialité des échanges.">
+          <div class="window-controls">
+            <span class="window-btn close"></span>
+            <span class="window-btn minimize"></span>
+            <span class="window-btn maximize"></span>
+          </div>
+          <div class="card-content">
+            <h3><strong>Privalis</strong></h3>
+            <p>Système d'Enchères Sécurisé Java & Oracle.</p>
+            <a href="projets/privalis.html" class="btn small">Voir le projet</a>
+          </div>
+          <div class="card-image-wrap">
+            <img src="ressources/images/privalis_decor-removebg-preview.png" alt="Coffre-fort Privalis"
+              class="card-decor-img" style="opacity: 0.3">
+          </div>
+        </article>
         <article class="card"
           data-summary="Une plateforme de communication sécurisée bout-en-bout utilisant des algorithmes de chiffrement modernes. Pensée pour la confidentialité absolue avec une interface inspirée des terminaux de commande.">
           <div class="window-controls">
@@ -193,17 +214,21 @@
           collaboration.</p>
         <div class="contact-info">
           <div class="contact-item">
-            <span class="contact-label">Téléphone</span>
+            <span class="contact-label"><i class="fas fa-phone"></i> Téléphone</span>
             <a href="tel:+33626949856">+33 06 26 94 98 56</a>
           </div>
           <div class="contact-item">
-            <span class="contact-label">Email</span>
+            <span class="contact-label"><i class="fas fa-envelope"></i> Email</span>
             <a href="mailto:thomas.baert2014@gmail.com">thomas.baert2014@gmail.com</a>
           </div>
           <div class="contact-item">
-            <span class="contact-label">LinkedIn</span>
+            <span class="contact-label"><i class="fab fa-linkedin"></i> LinkedIn</span>
             <a href="https://www.linkedin.com/in/thomas-baert-077503317/" target="_blank"
               rel="noopener noreferrer">Thomas BAERT</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label"><i class="fab fa-github"></i> GitHub</span>
+            <a href="https://github.com/Thomas-Baert" target="_blank" rel="noopener noreferrer">Thomas-Baert</a>
           </div>
         </div>
       </div>
@@ -232,6 +257,29 @@
     </div>
   </div>
 
+  <!-- CV Preview Modal -->
+  <div id="cvModal" class="summary-modal cv-modal">
+    <div class="cv-container">
+      <div class="cv-header">
+        <h2 class="vt-title">Curriculum Vitae</h2>
+        <div class="cv-controls">
+          <a href="ressources/pdf/CV-Thomas BAERT.pdf" download class="btn small"><i class="fas fa-file-download"></i>
+            Télécharger</a>
+          <span class="cv-close">&times;</span>
+        </div>
+      </div>
+      <div class="cv-body" id="cv-viewer">
+        <!-- PDF pages will be rendered here -->
+      </div>
+    </div>
+  </div>
+
+  <div id="taskbar" class="taskbar"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
   <script src="ressources/js/app.js"></script>
 </body>
 

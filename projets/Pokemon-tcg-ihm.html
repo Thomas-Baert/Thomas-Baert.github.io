@@ -14,7 +14,14 @@
 
     <header class="site-header">
       <nav class="nav">
-        <a href="/"><div class="brand">Thomas BAERT — Portfolio</div></a>
+        <a href="/">
+          <div class="brand">Thomas BAERT — Portfolio</div>
+        </a>
+        <div class="burger-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
         <ul class="nav-links">
           <li><a href="../index.html#about">À propos</a></li>
           <li><a href="../index.html#work">Projets</a></li>
@@ -56,13 +63,15 @@
         </div>
         <p>Le projet s'articule autour d'une architecture <strong>MVC adaptée à JavaFX</strong>, avec une
           séparation claire entre :</p>
-        <ul class="feature-list">
-          <li><strong>Le paquetage mecanique :</strong> logique métier encapsulée (non modifiable)</li>
-          <li><strong>Le paquetage vues :</strong> ensemble des composants d'interface graphique développés
-          </li>
-          <li><strong>Les interfaces façades</strong> (IJeu, IJoueur, IPokemon, etc.) : permettant la
-            communication avec la logique métier</li>
-        </ul>
+        <div class="timeline-content">
+          <ul class="feature-list">
+            <li><strong>Le paquetage mecanique :</strong> logique métier encapsulée (non modifiable)</li>
+            <li><strong>Le paquetage vues :</strong> ensemble des composants d'interface graphique développés
+            </li>
+            <li><strong>Les interfaces façades</strong> (IJeu, IJoueur, IPokemon, etc.) : permettant la
+              communication avec la logique métier</li>
+          </ul>
+        </div>
       </section>
 
       <section class="project-section">
@@ -166,7 +175,7 @@
         <h2>Principes techniques mis en œuvre</h2>
 
         <div class="tech-grid">
-          <div class="tech-card">
+          <div class="timeline-content">
             <h3>Patterns et Architecture</h3>
             <ul>
               <li><strong>Composant auto-contrôlé :</strong> Chaque vue est à la fois un composant
@@ -178,7 +187,7 @@
             </ul>
           </div>
 
-          <div class="tech-card">
+          <div class="timeline-content">
             <h3>JavaFX avancé</h3>
             <div class="code-snippet-img">
               <img src="../ressources/images/finDePartieProperty.png" alt="Extrait de code écouteur de propriété"
@@ -193,7 +202,7 @@
             </ul>
           </div>
 
-          <div class="tech-card">
+          <div class="timeline-content">
             <h3>Optimisations</h3>
             <ul>
               <li><strong>Cache d'images :</strong> Réduction drastique de la latence</li>
@@ -207,24 +216,30 @@
 
       <section class="project-section">
         <h2>Contribution Individuelle</h2>
-        <p>Au sein du binôme, j'ai particulièrement travaillé sur les briques fondamentales de l'affichage des cartes et la structure globale de l'interface :</p>
-        
+        <p>Au sein du binôme, j'ai particulièrement travaillé sur les briques fondamentales de l'affichage des cartes et
+          la structure globale de l'interface :</p>
+
         <div class="tech-grid">
-          <div class="tech-card">
+          <div class="timeline-content">
             <h3>Composants & Visuel</h3>
             <ul>
-              <li><strong>VuePokemon :</strong> Implémentation de la classe gérant l'affichage composite d'un Pokémon (Carte + États + Dégâts) via un <code>StackPane</code>.</li>
-              <li><strong>Système d'Énergies :</strong> Développement de la logique d'affichage et de placement dynamique des icônes d'énergie sur les cartes (<code>getIconeEnergie</code>).</li>
+              <li><strong>VuePokemon :</strong> Implémentation de la classe gérant l'affichage composite d'un Pokémon
+                (Carte + États + Dégâts) via un <code>StackPane</code>.</li>
+              <li><strong>Système d'Énergies :</strong> Développement de la logique d'affichage et de placement
+                dynamique des icônes d'énergie sur les cartes (<code>getIconeEnergie</code>).</li>
               <li><strong>VueResultats :</strong> Création de l'interface de fin de partie.</li>
             </ul>
           </div>
 
-          <div class="tech-card">
+          <div class="timeline-content">
             <h3>Architecture & Logique</h3>
             <ul>
-              <li><strong>Refactor VueDuJeu :</strong> Migration de la vue principale vers un <code>StackPane</code> pour gérer les superpositions (z-index) des différents écrans.</li>
-              <li><strong>Intégration :</strong> Développement des constructeurs de <code>VueCarte</code> et méthodes utilitaires pour la manipulation des images.</li>
-              <li><strong>Debug :</strong> Résolution des problèmes de redimensionnement et de superposition des éléments graphiques.</li>
+              <li><strong>Refactor VueDuJeu :</strong> Migration de la vue principale vers un <code>StackPane</code>
+                pour gérer les superpositions (z-index) des différents écrans.</li>
+              <li><strong>Intégration :</strong> Développement des constructeurs de <code>VueCarte</code> et méthodes
+                utilitaires pour la manipulation des images.</li>
+              <li><strong>Debug :</strong> Résolution des problèmes de redimensionnement et de superposition des
+                éléments graphiques.</li>
             </ul>
           </div>
         </div>
@@ -238,16 +253,21 @@
             de la partie.</p>
         </div>
         <p>L'interface graphique développée permet une expérience de jeu complète et fluide :</p>
-        <ul class="feature-list">
-          <li>✅ Affichage clair des zones de jeu des deux joueurs</li>
-          <li>✅ Interactions intuitives (clic sur cartes, énergies, boutons d'action)</li>
-          <li>✅ Feedback visuel immédiat (preview de cartes, masquage des KO)</li>
-          <li>✅ Interface entièrement responsive s'adaptant à la taille de l'écran</li>
-          <li>✅ Gestion complète du cycle de jeu (début, déroulement, fin de partie)</li>
-        </ul>
-        <p class="highlight">Ce projet illustre la maîtrise des concepts avancés de JavaFX (bindings, listeners,
-          FXML) ainsi que la capacité à architecturer une application IHM complexe en respectant les principes
-          de séparation des responsabilités et de réutilisabilité du code.</p>
+        <div class="timeline-content">
+          <ul class="feature-list">
+            <li>✅ Affichage clair des zones de jeu des deux joueurs</li>
+            <li>✅ Interactions intuitives (clic sur cartes, énergies, boutons d'action)</li>
+            <li>✅ Feedback visuel immédiat (preview de cartes, masquage des KO)</li>
+            <li>✅ Interface entièrement responsive s'adaptant à la taille de l'écran</li>
+            <li>✅ Gestion complète du cycle de jeu (début, déroulement, fin de partie)</li>
+          </ul>
+        </div>
+        <div class="timeline-content" style="margin-top: 20px;">
+          <p><strong>Bilan :</strong> Ce projet illustre la maîtrise des concepts avancés de JavaFX (bindings,
+            listeners,
+            FXML) ainsi que la capacité à architecturer une application IHM complexe en respectant les principes
+            de séparation des responsabilités et de réutilisabilité du code.</p>
+        </div>
       </section>
 
       <div class="project-footer">

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Privalis - Thomas BAERT</title>
+    <link rel="stylesheet" href="../ressources/style/style.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="crt-container">
+        <div class="scanlines"></div>
+
+        <header class="site-header">
+            <nav class="nav">
+                <a href="/">
+                    <div class="brand">Thomas BAERT — Portfolio</div>
+                </a>
+                <div class="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="../index.html#about">À propos</a></li>
+                    <li><a href="../index.html#work">Projets</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="project-page">
+            <div class="project-header">
+                <h1>Projet Privalis</h1>
+                <p class="project-subtitle">Système d'Enchères Sécurisé & Architecture Réflexive</p>
+                <div class="project-meta">
+                    <span class="meta-item"><strong>Contexte :</strong> SAE-3 - Architecture Logicielle &
+                        Sécurité</span>
+                    <span class="meta-item"><strong>Product Owner :</strong> <strong>BAERT Thomas</strong></span>
+                    <span class="meta-item"><strong>Status :</strong> Final Sprint (En cours)</span>
+                    <span class="meta-item"><strong>Technologies :</strong> Java 21, Oracle SQL, SSL/TLS, RSA,
+                        JSON-RPC</span>
+                </div>
+            </div>
+
+            <section class="project-section">
+                <h2>Vision & Problématique</h2>
+                <p><strong>Privalis</strong> est une plateforme distribuée d'enchères au second prix (Vickrey). Dans ce
+                    modèle "à plis fermés", l'anonymat des offres et l'intégrité du protocole sont critiques : les
+                    montants ne doivent être révélés qu'après la clôture, et aucun acteur (pas même le serveur) ne doit
+                    pouvoir altérer une offre sans être détecté.</p>
+
+                <div class="timeline-content">
+                    <h3>Logique & Justification</h3>
+                    <p>Le choix de l'enchère de Vickrey impose une architecture où le <strong>Serveur</strong> est un
+                        pur relais de stockage (aveugle aux prix) tandis que l'<strong>Autorité</strong> est le seul
+                        tiers de confiance capable de lever le secret. Cette séparation des pouvoirs est la clé de la
+                        non-répudiation et de l'équité du système.</p>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Analyse Fonctionnelle (DCU)</h2>
+                <div class="project-image-container">
+                    <img src="../ressources/images/dcu-privalis.png" alt="Diagramme de Cas d'Utilisation"
+                        class="project-img">
+                    <p class="img-caption">Diagramme de Cas d'Utilisation (DCU) modélisant les interactions métiers et
+                        la
+                        frontière du système.</p>
+                </div>
+
+                <p>Le fonctionnement repose sur une orchestration précise entre les acteurs :</p>
+                <div class="timeline-content">
+                    <ul class="feature-list">
+                        <li><strong>Enchérisseur :</strong> Il ne se contente pas d'envoyer un prix. Il doit générer une
+                            preuve cryptographique (chiffrement RSA pour l'Autorité) et signer le résultat pour garantir
+                            que
+                            l'offre émane bien de lui.</li>
+                        <li><strong>Vendeur (S) :</strong> Il prépare la session. Il reçoit les plis sans pouvoir les
+                            ouvrir, garantissant la règle du "pli fermé".</li>
+                        <li><strong>Autorité (A) :</strong> Elle n'intervient qu'à la fin pour le déchiffrement massif,
+                            le
+                            tri des deux meilleurs prix et la déclaration du vainqueur, empêchant toute fraude de la
+                            part du
+                            vendeur.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Développement Chronologique</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Sprint 1 : Socle & Persistance</h3>
+                            <span class="timeline-date">01 oct. — 16 oct.</span>
+                            <ul>
+                                <li>Modélisation du domaine (Enchères, Utilisateurs, Objets Data).</li>
+                                <li>Développement de l'<strong>ORM maison</strong> (MapperObjet) et Repository.</li>
+                                <li>Initialisation de la base de données Oracle SQL.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Sprint 2 : Architecture Réseau</h3>
+                            <span class="timeline-date">17 oct. — 13 nov.</span>
+                            <ul>
+                                <li>Implémentation du <strong>Routeur Dynamique</strong> (dispatching JSON-RPC).</li>
+                                <li>Gestion du multithreading serveur et <strong>BufferSortie</strong> thread-safe.</li>
+                                <li>Mise en place des premiers contrôleurs métiers (Enchères, Utilisateurs).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Sprint 3 : Sécurité Fondamentale</h3>
+                            <span class="timeline-date">14 nov. — 30 nov.</span>
+                            <ul>
+                                <li>Configuration des <strong>Sockets SSL/TLS</strong> (Client & Serveur).</li>
+                                <li>Gestionnaire de clés RSA-4096 avec <strong>stockage local sécurisé</strong>.</li>
+                                <li>Définition du contrat de signature et de chiffrement hybride.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Sprint 4 : Protocole Vickrey</h3>
+                            <span class="timeline-date">01 déc. — 17 déc.</span>
+                            <ul>
+                                <li>Orchestration du protocole de soumission (Client side automate).</li>
+                                <li>Implémentation du <strong>Broadcast Vérifié</strong> (tri lexicographique).</li>
+                                <li>Calcul sécurisé du second prix par l'Autorité côté serveur.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Sprint 5 : Intégration & Audit</h3>
+                            <span class="timeline-date">18 déc. — 13 janv.</span>
+                            <ul>
+                                <li><strong>Audit de sécurité :</strong> Simulation d'attaques sur le broadcast.</li>
+                                <li>Gestion des cas d'erreurs critiques et signalement de fraude.</li>
+                                <li>Finalisation des interfaces graphiques et tests d'intégration massifs.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Architecture du Serveur (Lead Dev)</h2>
+                <p>Le serveur est le pivot central du projet. J'en ai conçu l'intégralité du socle technique selon un
+                    modèle de haute performance et de sécurité.</p>
+
+                <div class="tech-stack">
+                    <div class="timeline-content">
+                        <h3>1. Dispatching Dynamique & Routage</h3>
+                        <p>Le serveur reçoit des requêtes JSON-RPC. Pour éviter un code spaghetti de tests conditionnels
+                            (if/else), j'ai mis en place un <strong>Routeur Dynamique</strong>. Ce dernier identifie le
+                            contrôleur et l'action à exécuter à partir du JSON pour invoquer la logique associée via une
+                            référence de méthode.</p>
+                        <div class="code-snippet-img">
+                            <pre><code class="language-java">// Dans Routeur.java - Recherche dynamique de l'action
+private static Function&lt;JSONObject, JSONObject&gt; getMethod(JSONObject json) {
+    String action = json.get("action").toString();
+    String nomController = json.get("controller").toString();
+
+    for (AbstractController controller : controllers) {
+        if (controller.getNom().equals(nomController)) {
+            if (controller.contientAction(action)) {
+                IMethodeControlleur methode = controller.getAction(action);
+                return methode::action; // Dispatching via référence de méthode
+            }
+        }
+    }
+    return null;
+}</code></pre>
+                        </div>
+                        <p><strong>Logique :</strong> Cette approche découple totalement la couche réseau des
+                            contrôleurs métiers. Ajouter une fonctionnalité consiste simplement à enregistrer une
+                            méthode dans
+                            un contrôleur ; le serveur la reconnaîtra automatiquement sans modification du code source
+                            de routage.</p>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>2. Gestion Multithread & BufferSortie</h3>
+                        <p>Dans un environnement socket, l'envoi de messages est une opération bloquante. J'ai créé la
+                            classe <code>BufferSortie</code> pour implémenter un modèle
+                            <strong>Producteur/Consommateur</strong> thread-safe.
+                        </p>
+                        <div class="code-snippet-img">
+                            <pre><code class="language-java">// Dans BufferSortie.java - Synchronisation via Future
+public class BufferSortie {
+    private static final Map&lt;String, CompletableFuture&lt;JSONObject&gt;&gt; buffers = new ConcurrentHashMap&lt;&gt;();
+
+    /** Appelé pour envoyer la réponse au bon client */
+    public static void setBuffer(String id, JSONObject buffer) {
+        CompletableFuture&lt;JSONObject&gt; future = buffers.get(id);
+        if (future != null) {
+            future.complete(buffer); // Produit et réveille le client
+        }
+    }
+
+    /** Appelé pour attendre le résultat du contrôleur */
+    public static JSONObject readBuffer(String id) {
+        CompletableFuture&lt;JSONObject&gt; future = buffers.get(id);
+        return future.get(); // Bloquant jusqu'au setBuffer
+    }
+}</code></pre>
+                        </div>
+                        <p><strong>Logique :</strong> Cette architecture garantit qu'un client avec une connexion lente
+                            n'impacte jamais les performances globales du serveur. Le thread métier "dépose" le message
+                            et repart immédiatement s'occuper des autres requêtes.</p>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>3. Le Moteur de Persistance (ORM)</h3>
+                        <p>Sans utiliser de bibliothèque externe, j'ai développé un ORM capable de mapper des graphes
+                            d'objets Java complexes vers du JSON, gérant automatiquement les clés primaires et les
+                            relations entre tables.</p>
+                        <div class="code-snippet-img">
+                            <pre><code class="language-java">// Dans MapperObjet.java - Détection de cycles
+public static TreeMap&lt;String, Object&gt; mapper(AbstractDataObject modele, ArrayList&lt;Object&gt; visites) {
+    visites.add(modele);
+    // ...
+    for (Field champ : champs) {
+        Object object = methode.invoke(modele);
+        if (!visites.contains(object)) {
+            // Sérialisation récursive si l'objet n'a pas été visité
+            map.put(nomAttribut, MapperObjet.mapper((AbstractDataObject) object, visites));
+        }
+    }
+    return map;
+}</code></pre>
+                        </div>
+                        <p><strong>Défi technique :</strong> Gérer les cycles (ex: Vente -> Enchère -> Vente). Mon ORM
+                            maintient un registre d'objets déjà visités lors de la sérialisation récursive, injectant
+                            des références là où une boucle infinie se formerait normalement.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Conception du Client (Architecture Automate)</h2>
+                <div class="tech-stack">
+                    <div class="timeline-content">
+                        <h3>Abstraction du Protocole</h3>
+                        <p>Côté client, la gestion du protocole cryptographique complexe (Vickrey) est isolée dans une
+                            interface <code>ProtocoleEnchere</code>. Cette abstraction permet de définir des étapes de
+                            communication séquentielles et interchangeables pour la gestion des enchères.</p>
+                        <div class="code-snippet-img">
+                            <pre><code class="language-java">// Dans ProtocoleEnchere.java - Orchestration des étapes
+@Override
+public void run() {
+    // Phase 1 : Soumission de l'enchère
+    EnvoiDeEnchere envoiDeEnchere = new EnvoiDeEnchere(prix);
+    byte[] chiffreOriginal = envoiDeEnchere.executer(getClient());
+
+    // Phase 2 : Réception du broadcast et vérification
+    VerificationBroadcast verificationBroadcast = new VerificationBroadcast(chiffreOriginal, idEnchere);
+    Boolean signatureCorrecte = verificationBroadcast.executer(getClient());
+
+    if (!signatureCorrecte) {
+        // Signalement d'une fraude détectée
+        new ErreurSignatureBroadcast(idEnchere).executer(getClient());
+    }
+}</code></pre>
+                        </div>
+                        <p><strong>Le modèle synchrone du client :</strong> Le client suit un automate fini. Il envoie
+                            une donnée et attend *précisément* le type de réponse attendu par le protocole (ex:
+                            Signature z du serveur). Cette certitude facilite la vérification des preuves
+                            cryptographiques à chaque étape.</p>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>Comparaison : Sync (Client) vs Event (Serveur)</h3>
+                        <p>Le projet force une cohabitation entre deux paradigmes :</p>
+                        <ul class="feature-list small">
+                            <li><strong>Client (Sync-like) :</strong> Précis, facile à vérifier cryptographiquement,
+                                assure que chaque phase est validée avant la suivante. Inconvénient : Moins souple.</li>
+                            <li><strong>Serveur (Event-driven) :</strong> Réagit aux messages sans connaître
+                                l'historique complet. Avantage : Supporte des milliers de connexions simultanées sans
+                                blocage.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Le Protocole Vickrey pas à pas (DSS)</h2>
+                <div class="project-image-container">
+                    <img src="../ressources/images/dss-privalis.png"
+                        alt="Diagramme de Séquence Système du protocole Vickrey" class="project-img">
+                    <p class="img-caption">Visualisation du protocole de sécurité complet implémenté.</p>
+                </div>
+
+                <div class="tech-stack">
+                    <div class="timeline-content">
+                        <h3>Phase 1 : Le Broadcast Vérifié</h3>
+                        <p>Comment savoir si le serveur n'a pas triché sur la liste des enchères reçues ? Le serveur
+                            trie les chiffrés par <strong>ordre lexicographique</strong> et signe l'ensemble. Les
+                            clients reçoivent ce broadcast et vérifient que leur hash <code>ci</code> est présent. Si un
+                            client manque à l'appel, il le signale immédiatement.</p>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Phase 2 : La Levée du Secret</h3>
+                        <p>L'Autorité déchiffre tout, calcule le second prix <code>X2</code> et signe le résultat final.
+                            Le serveur transmet cette preuve. La signature <code>z'</code> permet à chaque client de
+                            s'assurer que l'Autorité a bien travaillé sur les mêmes données que celles validées en Phase
+                            1.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" id="appendices">
+                <h2>Annexes Techniques</h2>
+                <p>Le diagramme de classes suivant détaille l'organisation structurelle des objets métiers et de la
+                    couche de données.</p>
+                <div class="project-image-container">
+                    <img src="../ressources/images/diagramme-privalis.png" alt="Diagramme de Classes complet"
+                        class="project-img">
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Contribution & Leadership</h2>
+                <div class="timeline-content">
+                    <p><strong>Rôle :</strong> Product Owner & Lead Architecte.</p>
+                    <p><strong>Impact :</strong> Architecture du socle réseau (Sockets SSL/TLS), moteur JSON-RPC et
+                        coordination technique de l'équipe.</p>
+                </div>
+                <div class="timeline-content" style="margin-top: 20px;">
+                    <p>En tant que Lead Architecte, j'ai conçu le <strong>socle système</strong>
+                        du projet, notamment via la création de la classe <code>Protocole</code> côté client et le
+                        développement de la logique de diffusion thread-safe côté serveur. Au-delà de ces fondations
+                        réseau,
+                        j'ai participé activement à tous les niveaux du cycle de vie : du développement de
+                        l'<strong>interface utilisateur</strong> pour simplifier l'UX du protocole, jusqu'à la
+                        collaboration
+                        sur les <strong>couches de chiffrement RSA</strong>. Ma priorité a été d'assurer une intégration
+                        fluide entre la robustesse technique du backend et l'expérience utilisateur finale.</p>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Compétences mobilisées</h2>
+                <div class="tech-grid">
+                    <div class="timeline-content">
+                        <h3>Hard Skills</h3>
+                        <ul class="feature-list small">
+                            <li><strong>Java & Réseaux :</strong> Sockets SSL/TLS, Multithreading, Réflexion.</li>
+                            <li><strong>Architectures :</strong> Design par automate, patterns Repository et Controller.
+                            </li>
+                            <li><strong>Cybersécurité :</strong> Chiffrement asymétrique RSA-4096 et Signatures
+                                numériques.</li>
+                        </ul>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Soft Skills</h3>
+                        <ul class="feature-list small">
+                            <li><strong>Product Ownership :</strong> Vision long-terme et arbitrage de complexité.</li>
+                            <li><strong>Analyse de Risques :</strong> Identification des failles potentielles du
+                                protocole.</li>
+                            <li><strong>Leadership :</strong> Pilotage d'une équipe technique vers un objectif de
+                                sécurité critique.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Bilan & Perspectives</h2>
+                <p>Privalis a été l'un des défis les plus stimulants de mon cursus, exigeant une rigueur absolue tant
+                    sur la théorie cryptographique que sur la pratique de l'architecture distribuée. Le succès de cette
+                    plateforme réside dans l'équilibre trouvé entre haute sécurité et fluidité d'utilisation.</p>
+                <p>Ce projet m'a non seulement permis de consolider mes compétences techniques en Java avancé et en
+                    cybersécurité, mais il a aussi renforcé ma capacité à piloter des projets complexes où chaque ligne
+                    de code impacte directement l'intégrité globale du système. C'est cette vision "Full-Stack Sécurité"
+                    que je souhaite continuer à explorer.</p>
+            </section>
+
+            <div class="project-footer">
+                <a href="../index.html#work" class="btn">← Retour aux projets</a>
+                <a href="../index.html#contact" class="btn ghost">Me contacter</a>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <p>© 2025 — Thomas BAERT. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+
+    <script src="../ressources/js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+</body>
+
+</html>

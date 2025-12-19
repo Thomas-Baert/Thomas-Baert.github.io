@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initProjectSummaryModal();
     initScrollReveal();
     initBurgerMenu();
+    initWindowActions();
+    initCVModal();
 
     // Console Easter Egg
     console.log("%c SYSTEM ONLINE ", "background: #5ec9a5; color: #1a1a1a; font-weight: bold; padding: 4px; border: 2px solid #e6e1cf;");
@@ -223,5 +225,161 @@ function initBurgerMenu() {
             burger.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
+    });
+}
+
+function initWindowActions() {
+    const cards = document.querySelectorAll('.card');
+    const taskbar = document.getElementById('taskbar');
+    if (!taskbar) return;
+
+    const updateTaskbarVisibility = () => {
+        if (taskbar.children.length > 0) {
+            taskbar.style.display = 'flex';
+            // Check for overflow to adjust alignment
+            if (taskbar.scrollWidth > taskbar.clientWidth) {
+                taskbar.style.justifyContent = 'flex-start';
+            } else {
+                taskbar.style.justifyContent = 'center';
+            }
+        } else {
+            taskbar.style.display = 'none';
+        }
+    };
+
+    cards.forEach((card, index) => {
+        const closeBtn = card.querySelector('.window-btn.close');
+        const minimizeBtn = card.querySelector('.window-btn.minimize');
+        const projectTitle = card.querySelector('h3')?.textContent || `Projet ${index + 1}`;
+
+        // Unique ID for restoration
+        const cardId = `card-${index}`;
+        card.setAttribute('id', cardId);
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                card.classList.add('closing');
+                setTimeout(() => {
+                    card.style.display = 'none';
+                    card.classList.remove('closing');
+                }, 400);
+            });
+        }
+
+        if (minimizeBtn) {
+            minimizeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                card.classList.add('minimizing');
+                setTimeout(() => {
+                    card.style.display = 'none';
+                    card.classList.remove('minimizing');
+
+                    // Create taskbar tab
+                    const tab = document.createElement('div');
+                    tab.className = 'taskbar-tab';
+                    tab.innerHTML = `<span><i class="fas fa-window-maximize"></i> ${projectTitle}</span>`;
+                    tab.dataset.target = cardId;
+
+                    tab.onclick = () => {
+                        card.style.display = 'flex';
+                        card.classList.add('restoring');
+                        tab.remove();
+                        updateTaskbarVisibility();
+
+                        setTimeout(() => {
+                            card.classList.remove('restoring');
+                        }, 400);
+                    };
+
+                    taskbar.appendChild(tab);
+                    updateTaskbarVisibility();
+                }, 400);
+            });
+        }
+    });
+
+    window.addEventListener('resize', updateTaskbarVisibility);
+}
+
+function initCVModal() {
+    const openBtn = document.getElementById('openCV');
+    const modal = document.getElementById('cvModal');
+    const closeBtn = document.querySelector('.cv-close');
+    let cvRendered = false;
+
+    if (!openBtn || !modal || !closeBtn) return;
+
+    const renderCV = () => {
+        if (cvRendered) return;
+
+        const url = 'ressources/pdf/CV-Thomas BAERT.pdf';
+        const container = document.getElementById('cv-viewer');
+        if (!container) return;
+
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                pdf.getPage(pageNum).then(page => {
+                    // Render at high quality, let CSS handle the width
+                    const isMobile = window.innerWidth < 768;
+                    const scale = isMobile ? 1.5 : 1.5;
+                    const viewport = page.getViewport({ scale });
+
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'cv-page';
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    // Allow native size for scrolling
+                    canvas.style.height = 'auto';
+
+                    // Add page canvas to container
+                    container.appendChild(canvas);
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            }
+            cvRendered = true;
+        }).catch(err => {
+            console.error('Error rendering CV:', err);
+            container.innerHTML = '<p style="color:var(--amber); margin-top:50px;">Impossible de charger l\'aperçu. Veuillez télécharger le PDF.</p>';
+            cvRendered = false; // Retry next time
+        });
+    };
+
+    openBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        renderCV();
+    });
+
+    const closeModal = () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close on click outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeModal();
+        }
     });
 }
