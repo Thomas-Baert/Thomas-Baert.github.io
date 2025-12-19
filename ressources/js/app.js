@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initBurgerMenu();
     initWindowActions();
     initCVModal();
+    initEmbeddedPDFs();
 
     // Console Easter Egg
     console.log("%c SYSTEM ONLINE ", "background: #5ec9a5; color: #1a1a1a; font-weight: bold; padding: 4px; border: 2px solid #e6e1cf;");
@@ -381,5 +382,149 @@ function initCVModal() {
         if (e.key === 'Escape' && modal.style.display === 'flex') {
             closeModal();
         }
+    });
+}
+
+function initEmbeddedPDFs_OLD() {
+    if (typeof pdfjsLib === 'undefined') return;
+
+    // Use .tech-pdf-viewer with data-src attribute (which we added in HTML)
+    const viewers = document.querySelectorAll('.tech-pdf-viewer[data-src]');
+
+    viewers.forEach(viewer => {
+        const url = viewer.getAttribute('data-src');
+        if (!url) return;
+
+        viewer.innerHTML = '<div style="color:var(--green-phosphor); text-align:center; padding:20px;">Chargement du document...</div>';
+
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            viewer.innerHTML = '';
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                pdf.getPage(pageNum).then(page => {
+                    const scale = 2.0;
+                    const viewport = page.getViewport({ scale });
+
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    // Match CV visual style
+                    canvas.style.width = '100%';
+                    canvas.style.height = 'auto';
+                    canvas.style.display = 'block';
+                    canvas.style.marginBottom = '20px'; // Space between pages
+                    canvas.style.borderRadius = '4px';
+
+                    viewer.appendChild(canvas);
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            }
+        }).catch(err => {
+            console.error('Error loading PDF:', err);
+            viewer.innerHTML = '<p style="color:#ffcc00; padding:20px;">Impossible de charger le document.</p>';
+        });
+    });
+}
+
+function initEmbeddedPDFs() {
+    if (typeof pdfjsLib === 'undefined') return;
+
+    // 1. Inline Viewers
+    const viewers = document.querySelectorAll('.tech-pdf-viewer[data-src]');
+    viewers.forEach(viewer => {
+        const url = viewer.getAttribute('data-src');
+        if (!url) return;
+        renderPDFToContainer(url, viewer, 2.0);
+    });
+
+    // 2. Modal Logic
+    const modal = document.getElementById('pdfViewerModal');
+    if (!modal) return;
+
+    const modalTitle = document.getElementById('pdfViewerTitle');
+    const modalDownload = document.getElementById('pdfViewerDownload');
+    const modalBody = document.getElementById('pdf-viewer-content');
+    const closeBtn = document.querySelector('.pdf-viewer-close');
+    const openBtns = document.querySelectorAll('.open-pdf-modal');
+
+    openBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const url = btn.getAttribute('data-src');
+            const title = btn.getAttribute('data-title') || "Document";
+
+            if (!url) return;
+
+            modalTitle.textContent = title;
+            modalDownload.href = url;
+            modalBody.innerHTML = ''; // Clear previous
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            // Render High Quality
+            renderPDFToContainer(url, modalBody, 1.5, true);
+        });
+    });
+
+    const closeModal = () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    if (closeBtn) closeBtn.onclick = closeModal;
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeModal();
+        }
+    });
+}
+
+function renderPDFToContainer(url, container, scaleParam = 1.5, isModal = false) {
+    container.innerHTML = '<div style="color:var(--green-phosphor); text-align:center; padding:20px;">Chargement...</div>';
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+        container.innerHTML = '';
+
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            pdf.getPage(pageNum).then(page => {
+                // Adjust scale for modal vs inline if needed
+                const viewport = page.getViewport({ scale: scaleParam });
+
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                canvas.style.width = '100%';
+                canvas.style.height = 'auto';
+                canvas.style.display = 'block';
+                canvas.style.marginBottom = '20px';
+                canvas.style.borderRadius = '4px';
+                if (isModal) canvas.classList.add('pdf-page'); // Use modal styling
+
+                container.appendChild(canvas);
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+            });
+        }
+    }).catch(err => {
+        console.error('Error loading PDF:', err);
+        container.innerHTML = '<p style="color:#ffcc00; padding:20px;">Erreur chargement.</p>';
     });
 }

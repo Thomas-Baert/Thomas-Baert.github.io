@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infra. Espace de Coworking - Thomas BAERT</title>
+    <link rel="stylesheet" href="../ressources/style/style.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="crt-container">
+        <div class="scanlines"></div>
+
+        <header class="site-header">
+            <nav class="nav">
+                <a href="/">
+                    <div class="brand">Thomas BAERT — Portfolio</div>
+                </a>
+                <div class="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="../index.html#about">À propos</a></li>
+                    <li><a href="../index.html#work">Projets</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="project-page">
+            <div class="project-header">
+                <h1>Infrastructure Espace Coworking</h1>
+                <p class="project-subtitle">Conception & Déploiement Réseau Complet</p>
+                <div class="project-meta">
+                    <span class="meta-item"><strong>Contexte :</strong> SAE 2.03 - Création d'un Espace de
+                        Services</span>
+                    <span class="meta-item"><strong>Équipe :</strong> BAERT Thomas (Lead), CERISIER Robin, ROUBAUD
+                        Louis</span>
+                    <span class="meta-item"><strong>Rôle :</strong> Architecte Réseau & SysAdmin</span>
+                    <span class="meta-item"><strong>Stack :</strong> Debian, Apache/Nginx, Postfix, VLANs</span>
+                </div>
+            </div>
+
+            <section class="project-section">
+                <h2>Vision & Problématique</h2>
+                <div class="timeline-content">
+                    <p>Ce projet simule la création technique d'un <strong>nouvel espace de coworking</strong>.
+                        L'objectif
+                        était de répondre aux besoins critiques de futurs "coworkers" (développeurs, freelances,
+                        startups)
+                        en leur fournissant une infrastructure robuste, sécurisée et riche en services.</p>
+                </div>
+
+                <div class="timeline-content">
+                    <h3>Les Enjeux Clients</h3>
+                    <p>L'étude de besoins a identifié plusieurs services indispensables pour l'attractivité de l'espace
+                        :</p>
+                    <ul class="feature-list">
+                        <li><strong>Hébergement Web (LAMP/LEMP) :</strong> Pour permettre aux coworkers de déployer et
+                            tester leurs applications en local.</li>
+                        <li><strong>Persistance & Réplication :</strong> Garantie que les données (BDD) ne soient jamais
+                            perdues, même en cas de panne disque.</li>
+                        <li><strong>Connectivité Fiable :</strong> Réseau filaire haute performance et couverture WiFi
+                            densifiée.</li>
+                        <li><strong>Services Internes :</strong> Messagerie locale (Postfix) et transfert de fichiers
+                            sécurisé.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Consignes & Sujet</h2>
+                <div class="timeline-content">
+                    <h3>Cahier des Charges</h3>
+                    <p>Document officiel définissant les contraintes techniques, l'adressage IP imposé et les services à
+                        déployer pour l'infrastructure.</p>
+                    <div class="pdf-toolbar"
+                        style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:10px;">
+                        <button class="btn small open-pdf-modal"
+                            data-src="../ressources/pdf/sae203/Presentation_Etude_Besoins.pdf"
+                            data-title="Cahier des Charges">
+                            <i class="fas fa-expand"></i> Agrandir
+                        </button>
+                        <a href="../ressources/pdf/sae203/Presentation_Etude_Besoins.pdf" download class="btn small">
+                            <i class="fas fa-file-download"></i> Télécharger
+                        </a>
+                    </div>
+                    <div class="tech-pdf-viewer sae203-pdf"
+                        data-src="../ressources/pdf/sae203/Presentation_Etude_Besoins.pdf">
+                        <!-- PDF rendered here via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Architecture & Sécurité Réseau</h2>
+                <div class="timeline-content">
+                    <p>Le cœur du projet repose sur une segmentation rigoureuse pour garantir l'étanchéité des données
+                        entre
+                        les différents locataires de l'espace.</p>
+                </div>
+
+                <div class="timeline-content">
+                    <h3><i class="fas fa-random"></i> Segmentation VLAN</h3>
+                    <p>Configuration de Switchs Niveau 2 (Cisco/HP) avec isolation stricte :</p>
+                    <ul>
+                        <li><strong>VLAN 10 (Admin) :</strong> Réservé à l'équipe de gestion. Accès SSH autorisé.
+                        </li>
+                        <li><strong>VLAN 20 (Coworkers) :</strong> Réseau clients avec isolation DHCP. Accès
+                            Internet uniquement.</li>
+                        <li><strong>VLAN 30 (Servers) :</strong> Zone démilitarisée (DMZ) pour les services
+                            Web/Mail.</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-content">
+                    <h3><i class="fas fa-lock"></i> Politique de Sécurité</h3>
+                    <p>Défense en profondeur appliquée sur les serveurs Debian :</p>
+                    <ul>
+                        <li><strong>UFW Firewall :</strong> Politique "Deny All" par défaut. Allow 80/443 (Web),
+                            25/587 (Mail).</li>
+                        <li><strong>Fail2Ban :</strong> Bannissement automatique des IPs après 3 échecs SSH.</li>
+                        <li><strong>HTTPS :</strong> Certificats SSL/TLS auto-signés (simulation PKI) pour tous les
+                            services web.</li>
+                    </ul>
+                    <div class="code-block-wrapper">
+                        <pre><code class="language-bash"># Exemple de configuration Firewall (UFW)
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 80/tcp comment 'Accept Apache HTTP'
+sudo ufw allow 443/tcp comment 'Accept Apache HTTPS'
+sudo ufw allow 22/tcp comment 'SSH Admin VLAN only'
+sudo ufw enable</code></pre>
+                    </div>
+                </div>
+
+                <div class="timeline-content">
+                    <h3>Documentation Technique</h3>
+                    <p>Accès au compte-rendu complet de l'infrastructure déployée :</p>
+                    <div class="pdf-toolbar"
+                        style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:10px;">
+                        <button class="btn small open-pdf-modal"
+                            data-src="../ressources/pdf/sae203/Compte_Rendu_Technique.pdf"
+                            data-title="Compte Rendu Technique">
+                            <i class="fas fa-expand"></i> Agrandir
+                        </button>
+                        <a href="../ressources/pdf/sae203/Compte_Rendu_Technique.pdf" download class="btn small">
+                            <i class="fas fa-file-download"></i> Télécharger
+                        </a>
+                    </div>
+                    <div class="tech-pdf-viewer sae203-pdf"
+                        data-src="../ressources/pdf/sae203/Compte_Rendu_Technique.pdf">
+                        <!-- PDF rendered here via JS -->
+                    </div>
+                </div>
+            </section>
+
+
+
+            <section class="project-section">
+                <h2>Réalisations & Leadership</h2>
+                <div class="timeline-content">
+                    <p>Ce projet m'a placé dans un rôle de <strong>Lead Tech</strong> au sein d'une équipe de 3
+                        personnes. J'ai piloté l'ensemble de la chaîne de production :</p>
+                    <ul class="feature-list">
+                        <li><strong>Choix d'Architecture :</strong> Décision de séparer les services critiques (Mail vs
+                            Web) sur des VMs distinctes.</li>
+                        <li><strong>Automatisation :</strong> Écriture de scripts Bash pour le déploiement rapide des
+                            serveurs LAMP (Linux, Apache, MySQL, PHP).</li>
+                        <div class="code-block-wrapper">
+                            <pre><code class="language-bash">#!/bin/bash
+# Extrait du script de déploiement automatique LAMP
+echo "[+] Installation des paquets..."
+apt-get update && apt-get install -y apache2 mariadb-server php libapache2-mod-php
+
+echo "[+] Configuration du VirtualHost..."
+cat <<EOF > /etc/apache2/sites-available/coworking.conf
+<VirtualHost *:80>
+    ServerName coworking.local
+    DocumentRoot /var/www/coworking
+</VirtualHost>
+EOF
+
+a2ensite coworking.conf && systemctl reload apache2
+echo "[+] Déploiement terminé."</code></pre>
+                        </div>
+                        <li><strong>Résolution de Conflits :</strong> Arbitrage technique sur le choix du SGBD (MariaDB
+                            retenu pour sa compatibilité Debian).</li>
+                        <li><strong>Livraison :</strong> Compilation des rapports techniques et organisation de la
+                            soutenance finale.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="project-footer">
+                <a href="../index.html" class="btn">Retour à l'accueil</a>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <p>© 2025 Thomas BAERT. Built with retro-passion.</p>
+        </footer>
+    </div>
+
+
+
+    <!-- PDF Viewer Modal -->
+    <div id="pdfViewerModal" class="summary-modal cv-modal">
+        <div class="pdf-viewer-container">
+            <div class="pdf-viewer-header">
+                <h2 id="pdfViewerTitle" class="vt-title">Document</h2>
+                <div class="pdf-viewer-controls">
+                    <a id="pdfViewerDownload" href="#" download class="btn small"><i class="fas fa-file-download"></i>
+                        Télécharger</a>
+                    <span class="pdf-viewer-close">&times;</span>
+                </div>
+            </div>
+            <div class="pdf-viewer-body" id="pdf-viewer-content">
+                <!-- PDF pages will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="../ressources/js/app.js"></script>
+</body>
+
+</html>

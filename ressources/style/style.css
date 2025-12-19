@@ -1556,6 +1556,7 @@ h1 {
     border-radius: var(--border-radius);
     box-shadow: inset 0 0 0 2px rgba(94, 201, 165, 0.2);
     transition: all 0.3s ease;
+    margin-top: 30px;
 }
 
 .timeline-content:hover {
@@ -2271,8 +2272,9 @@ h1 {
     transform: scale(1.1);
 }
 
-/* CV Modal Specifics */
-.cv-container {
+/* CV/PDF Modal Specifics */
+.cv-container,
+.pdf-viewer-container {
     background: var(--bg-dark);
     width: 90%;
     max-width: 1000px;
@@ -2286,7 +2288,8 @@ h1 {
     animation: modalSlide 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
-.cv-header {
+.cv-header,
+.pdf-viewer-header {
     padding: 15px 25px;
     background: rgba(255, 182, 66, 0.1);
     border-bottom: 1px solid var(--amber);
@@ -2303,41 +2306,48 @@ h1 {
         position: relative;
     }
 
-    .cv-header h2 {
+    .cv-header h2,
+    .pdf-viewer-header h2 {
         text-align: center;
         width: 100%;
     }
 
-    .cv-controls {
+    .cv-controls,
+    .pdf-viewer-controls {
         width: 100%;
         justify-content: center;
     }
 
-    .cv-close {
+    .cv-close,
+    .pdf-viewer-close {
         position: absolute;
         top: 15px;
         right: 15px;
     }
 
-    .cv-body {
+    .cv-body,
+    .pdf-viewer-body {
         padding: 10px;
     }
 }
 
-.cv-header h2 {
+.cv-header h2,
+.pdf-viewer-header h2 {
     margin: 0;
     font-size: 2rem;
     font-family: 'VT323', monospace;
     color: var(--amber);
 }
 
-.cv-controls {
+.cv-controls,
+.pdf-viewer-controls {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.cv-close {
+.cv-close,
+.pdf-viewer-close {
     color: var(--amber);
     font-size: 35px;
     line-height: 1;
@@ -2345,7 +2355,8 @@ h1 {
     transition: transform 0.2s;
 }
 
-.cv-close:hover {
+.cv-close:hover,
+.pdf-viewer-close:hover {
     transform: scale(1.1);
     color: var(--fg);
 }
@@ -2358,26 +2369,31 @@ h1 {
 }
 
 /* Custom Amber Scrollbar for CV */
-.cv-body::-webkit-scrollbar {
+.cv-body::-webkit-scrollbar,
+.pdf-viewer-body::-webkit-scrollbar {
     width: 10px;
 }
 
-.cv-body::-webkit-scrollbar-track {
+.cv-body::-webkit-scrollbar-track,
+.pdf-viewer-body::-webkit-scrollbar-track {
     background: var(--bg-dark);
 }
 
-.cv-body::-webkit-scrollbar-thumb {
+.cv-body::-webkit-scrollbar-thumb,
+.pdf-viewer-body::-webkit-scrollbar-thumb {
     background: rgba(255, 182, 66, 0.2);
     border: 1px solid var(--amber);
     border-radius: 4px;
 }
 
-.cv-body::-webkit-scrollbar-thumb:hover {
+.cv-body::-webkit-scrollbar-thumb:hover,
+.pdf-viewer-body::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 182, 66, 0.5);
     box-shadow: 0 0 10px var(--amber);
 }
 
-.cv-body {
+.cv-body,
+.pdf-viewer-body {
     flex-grow: 1;
     background: #222;
     overflow: auto;
@@ -2389,7 +2405,8 @@ h1 {
     gap: 20px;
 }
 
-.cv-page {
+.cv-page,
+.pdf-page {
     width: 100%;
     height: auto;
     display: block;
@@ -2506,6 +2523,7 @@ h1 {
     flex-direction: column;
     gap: 30px;
     margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .tech-stack .tech-card {
@@ -2779,4 +2797,169 @@ pre[class*="language-"] {
         transform: scale(1) translateY(0);
         opacity: 1;
     }
+}
+
+/* Green Theme for SAE 2.03 Project Card */
+.sae203-card {
+    background: linear-gradient(135deg, #0d2b12 0%, #004a1c 100%) !important;
+    border: 1px solid #2e7d32 !important;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+}
+
+.sae203-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 #2e7d32, 0 0 25px rgba(76, 175, 80, 0.6);
+    border-color: #4caf50 !important;
+}
+
+.sae203-card .card-content {
+    position: relative;
+    z-index: 3;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    margin-top: auto;
+}
+
+.sae203-card h3 {
+    color: #4caf50 !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(76, 175, 80, 0.4);
+    margin-bottom: 10px;
+}
+
+.sae203-card p {
+    color: #e6e1cf;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.sae203-card .btn {
+    background: #1b5e20 !important;
+    border-color: #4caf50 !important;
+    color: #fff !important;
+    box-shadow: 0 0 10px rgba(27, 94, 32, 0.3);
+}
+
+.sae203-card .btn:hover {
+    background: #4caf50 !important;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6) !important;
+}
+
+/* Green Theme for Summary Modal */
+.summary-container.theme-green {
+    border-color: #2e7d32;
+    box-shadow: 0 0 35px rgba(46, 125, 50, 0.4);
+}
+
+.summary-container.theme-green .summary-banner {
+    background: linear-gradient(135deg, #0d2b12 0%, #004a1c 100%);
+}
+
+.summary-container.theme-green h2 {
+    color: #4caf50;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+}
+
+.summary-container.theme-green .summary-close {
+    color: #4caf50;
+}
+
+.summary-container.theme-green .btn {
+    background: #1b5e20 !important;
+    border-color: #4caf50 !important;
+}
+
+.summary-container.theme-green .btn:hover {
+    background: #4caf50 !important;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6) !important;
+}
+
+.summary-container.theme-green ::-webkit-scrollbar-thumb {
+    background: rgba(27, 94, 32, 0.3);
+    border-color: #2e7d32;
+}
+
+.summary-container.theme-green ::-webkit-scrollbar-thumb:hover {
+    background: rgba(76, 175, 80, 0.5);
+    box-shadow: 0 0 10px #4caf50;
+}
+
+
+/* Integrated PDF Viewer Styling */
+.tech-pdf-viewer {
+    width: 100%;
+    height: 600px;
+    border: 2px solid var(--aqua);
+    /* Default theme */
+    border-radius: var(--border-radius);
+    background: #1a1a1a;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    margin: 20px 0;
+    overflow: scroll;
+}
+
+.sae203-pdf {
+    border-color: #4caf50;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.tech-pdf-viewer iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    /* Custom Scrollbar for iframe content if supported, 
+       otherwise rely on container styling */
+    /* Custom Scrollbar for iframe content if supported */
+    scrollbar-width: thin;
+    scrollbar-color: var(--green-phosphor) var(--bg-dark);
+}
+
+/* Code Block Styling for Project Pages */
+.code-block-wrapper {
+    margin: 20px 0;
+    border: 1px solid var(--muted-brown);
+    border-radius: 6px;
+    background: #1d1f21;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.code-block-wrapper pre {
+    margin: 0 !important;
+    padding: 15px !important;
+    overflow-x: auto;
+}
+
+/* Code block scrollbar match global */
+.code-block-wrapper pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-thumb {
+    background: rgba(94, 201, 165, 0.2);
+    border: 1px solid var(--green-phosphor);
+    border-radius: 4px;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-thumb:hover {
+    background: rgba(94, 201, 165, 0.5);
+}
+
+.code-block-wrapper code {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+}
+
+
+.tech-card .code-block-wrapper {
+    margin-top: 15px;
+    border-color: var(--tech-card-border);
 }
