@@ -83,7 +83,8 @@
             <section class="project-section">
                 <h2>Architecture & Topologie</h2>
                 <div class="timeline-content">
-                    <p>Le réseau n'est pas un maillage complet (full mesh) mais un **graphe aléatoire partiel**. Chaque
+                    <p>Le réseau n'est pas un maillage complet (full mesh) mais un <strong>graphe aléatoire
+                            partiel</strong>. Chaque
                         nœud maintient une table de pairs limitée (6 à 12 voisins), assurant une faible consommation de
                         ressources tout en garantissant une connectivité globale élevée.</p>
 
@@ -115,7 +116,8 @@
                 <div class="timeline-content">
                     <p>Pour garantir que seuls des nœuds de confiance rejoignent l'overlay, le système utilise un
                         <strong>modèle de provisioning offline</strong>. Contrairement au Web classique, il n'y a pas de
-                        CA en ligne ; la confiance est établie lors de la création du nœud.</p>
+                        CA en ligne ; la confiance est établie lors de la création du nœud.
+                    </p>
 
                     <div class="tech-stack">
                         <div class="tech-card">
@@ -137,7 +139,8 @@
                 <h2>Modèle de Sécurité (DACS)</h2>
                 <div class="timeline-content">
                     <p>Conformément au parcours DACS, la sécurité est intégrée dès la conception (Security by Design).
-                        Tout échange est protégé par **TLS 1.3** avec <strong>authentification mutuelle (mTLS)</strong>.
+                        Tout échange est protégé par <strong>TLS 1.3</strong> avec <strong>authentification mutuelle
+                            (mTLS)</strong>.
                     </p>
 
                     <table class="tech-table">
@@ -205,16 +208,52 @@ public class MessageHeader {
                 </div>
             </section>
 
-            <!-- Algorithms Section -->
+            <!-- Algorithms & NAT Section -->
             <section class="project-section">
-                <h2>Algorithmes & Propagation</h2>
+                <h2>Algorithmes, Propagation & NAT Traversal</h2>
                 <div class="timeline-content">
+                    <h3>Gossip Routing (Fanout)</h3>
                     <p>La diffusion des informations repose sur le <strong>Gossip Routing (Fanout Routing)</strong>.
                         Lorsqu'un nœud reçoit un message inconnu, il le relaie à une sélection aléatoire de voisins
                         (fanout=3) jusqu'à épuisement du TTL.</p>
+                </div>
+
+                <div class="timeline-content">
+                    <h3>NAT Traversal : UDP Hole Punching</h3>
+                    <p>Pour permettre la communication entre des nœuds situés derrière des pare-feux restrictifs ou des
+                        NAT (Network Address Translation), le réseau implémente la technique de <strong>UDP Hole
+                            Punching</strong>.</p>
+                    <div class="tech-stack">
+                        <div class="tech-card">
+                            <h4>Mécanisme de Traversée</h4>
+                            <p>Le processus se déroule en trois étapes clés :</p>
+                            <ol class="feature-list">
+                                <li><strong>Signalement :</strong> Les nœuds A et B se connectent au nœud de Bootstrap
+                                    qui
+                                    identifie leurs adresses IP publiques et leurs ports traduits.</li>
+                                <li><strong>Échange de Endpoints :</strong> Le Bootstrap transmet à chaque nœud les
+                                    coordonnées publiques de l'autre.</li>
+                                <li><strong>Punching :</strong> Les deux nœuds envoient simultanément un paquet UDP. Le
+                                    NAT de
+                                    chaque côté interprète le paquet sortant comme le début d'une session, ouvrant une
+                                    "brèche" (hole) qui permet alors la communication bidirectionnelle directe.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-content">
+                    <h3>Séquence de Découverte (Bootstrap)</h3>
+                    <p>Le <strong>Bootstrap</strong> est la porte d'entrée du réseau. Ce nœud, dont l'adresse est fixe
+                        et
+                        connue, permet à tout nouvel arrivant d'intégrer le graphe sans connaissance préalable de la
+                        topologie.</p>
+                    <p>Le Handshake initial passe par une vérification mutuelle des certificats (mTLS) avant que le
+                        Bootstrap ne délivre une portion de sa propre table de pairs (Peer Table), permettant au nouveau
+                        nœud de commencer son propre "Gossip" et d'équilibrer ses liens.</p>
 
                     <div class="diagram-container">
-                        <h3>Séquence de Découverte (Bootstrap)</h3>
+                        <h3>Visualisation du Bootstrap</h3>
                         <div class="mermaid-wrapper">
                             <div class="mermaid">
                                 sequenceDiagram
@@ -222,13 +261,16 @@ public class MessageHeader {
                                 participant B as Nœud Bootstrap
                                 participant P as Pairs Découverts
 
-                                N->>B: PING (Handshake TLS)
-                                B-->>N: PONG (Liste de Peers : C, D, E)
+                                N->>B: PING (mTLS Handshake)
+                                Note over B: Vérification Certificat
+                                B-->>N: PONG (Peer List Update + NAT Info)
                                 Note over N: Mise à jour Table de Pairs
-                                N->>P: PING (Établissement liens)
-                                P-->>N: ACK / PONG
+                                N->>P: UDP Punching / Peer PING
+                                P-->>N: ACK / Established
                             </div>
                         </div>
+                        <p class="img-caption">Diagramme de séquence détaillant l'admission et la première phase de
+                            découverte.</p>
                     </div>
                 </div>
             </section>
@@ -324,6 +366,11 @@ public class MessageHeader {
         });
     </script>
     <script src="../ressources/js/app.js"></script>
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div id="modalCaption" class="modal-caption"></div>
+    </div>
 </body>
 
 </html>

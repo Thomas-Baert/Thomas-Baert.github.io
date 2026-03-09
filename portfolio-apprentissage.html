@@ -49,32 +49,85 @@
                 <article class="tech-card">
                     <h3>Compétence : Gérer des données</h3>
                     <p class="timeline-date">Niveau 2 : Optimiser l'exploitation d'une base de données</p>
-                    <p>Dans le <strong>Projet Privalis</strong> (S3-S4), j'ai dû concevoir un schéma relationnel
-                        complexe sous Oracle pour gérer les enchères, les utilisateurs et l'Autorité. J'ai optimisé les
-                        requêtes via un <strong>Custom ORM</strong> et utilisé des déclencheurs SQL pour assurer
-                        l'intégrité des données même lors d'agrégations homomorphes.</p>
+
+                    <div class="ac-tags">
+                        <span class="ac-tag">AC24.01</span>
+                        <span class="ac-tag">AC24.02</span>
+                    </div>
+
+                    <div class="ac-details">
+                        <h4>Apprentissages Critiques & Validation :</h4>
+                        <ul class="feature-list">
+                            <li><strong>AC24.01 (Optimiser les modèles) :</strong> Validé lors de la refonte du schéma
+                                de la base Privalis pour supporter les agrégations homomorphes et la traçabilité des
+                                offres.</li>
+                            <li><strong>AC24.02 (Sécurité des données) :</strong> Validé par l'implémentation du
+                                protocole Damgård-Jurik garantissant la confidentialité des enchères dès la couche de
+                                stockage.</li>
+                        </ul>
+                    </div>
+
+                    <p>Dans le <strong>Projet Privalis</strong> (S3-S4), j'ai conçu un schéma relationnel optimisé sous
+                        Oracle. L'utilisation de déclencheurs SQL et de procédures stockées a permis de garantir
+                        l'intégrité des données tout en respectant des contraintes de performance strictes liées au
+                        volume de transactions simulées.</p>
                     <a href="projets/privalis.html" class="btn small">Voir la preuve (Privalis)</a>
                 </article>
 
                 <!-- Compétence 2 -->
                 <article class="tech-card">
-                    <h3>Compétence : Optimiser des solutions informatiques</h3>
+                    <h3>Compétence : Optimiser des solutions</h3>
                     <p class="timeline-date">Niveau 2 : Évaluation des performances et choix algorithmiques</p>
-                    <p>Le projet <strong>C2 Network</strong> illustre cette compétence à travers le choix du
-                        <strong>Gossip Protocol</strong>. J'ai analysé la complexité du routage par propagation pour
-                        minimiser le nombre de messages tout en maximisant la couverture réseau (fanout vs TTL),
-                        garantissant une performance stable sur un graphe décentralisé.</p>
+
+                    <div class="ac-tags">
+                        <span class="ac-tag">AC22.01</span>
+                        <span class="ac-tag">AC22.02</span>
+                        <span class="ac-tag">AC22.03</span>
+                    </div>
+
+                    <div class="ac-details">
+                        <h4>Apprentissages Critiques & Validation :</h4>
+                        <ul class="feature-list">
+                            <li><strong>AC22.01 (Structures complexes) :</strong> Utilisation d'une topologie de graphe
+                                aléatoire pour structurer le réseau overlay décentralisé.</li>
+                            <li><strong>AC22.02 (Techniques algorithmiques) :</strong> Mise en œuvre d'un algorithme de
+                                Gossip (propagation probabiliste) optimisé par Fanout et TTL.</li>
+                            <li><strong>AC22.03 (Sécurisation code/données) :</strong> Utilisation de TLS 1.3 mTLS et
+                                signatures SHA256 pour sécuriser l'intégrité du protocole applicatif.</li>
+                        </ul>
+                    </div>
+
+                    <p>Le projet <strong>C2 Network</strong> illustre cette compétence à travers l'analyse de la
+                        complexité du routage décentralisé. J'ai justifié les choix techniques pour minimiser le
+                        "overhead" réseau tout en assurant une propagation robuste des messages de commande.</p>
                     <a href="projets/c2-network.html" class="btn small">Voir la preuve (C2 Network)</a>
                 </article>
 
                 <!-- Compétence 3 -->
                 <article class="tech-card">
-                    <h3>Compétence : Concevoir des solutions logicielles</h3>
+                    <h3>Compétence : Concevoir des solutions</h3>
                     <p class="timeline-date">Niveau 2 : Application de patterns et architecture n-tiers</p>
-                    <p>Pour le projet <strong>Pokémon TCG IHM</strong>, j'ai mis en place une architecture <strong>MVC
-                            asynchrone</strong> stricte sous JavaFX. La séparation des responsabilités entre la logique
-                        métier complexe et les composants graphiques auto-gérés m'a permis de construire une solution
-                        modulaire et évolutive.</p>
+
+                    <div class="ac-tags">
+                        <span class="ac-tag">AC21.01</span>
+                        <span class="ac-tag">AC21.02</span>
+                    </div>
+
+                    <div class="ac-details">
+                        <h4>Apprentissages Critiques & Validation :</h4>
+                        <ul class="feature-list">
+                            <li><strong>AC21.01 (Spécifications) :</strong> Rédaction et implémentation des
+                                spécifications fonctionnelles du moteur de jeu et des interactions asynchrones.</li>
+                            <li><strong>AC21.02 (Accessibilité & Ergonomie) :</strong> Conception d'une interface JavaFX
+                                intuitive respectant les codes visuels du TCG original tout en simplifiant la
+                                navigation.</li>
+                        </ul>
+                    </div>
+
+                    <p>Pour le projet <strong>Pokémon TCG IHM</strong>, j'ai mis en place une architecture MVC
+                        rigoureuse. Cette séparation des couches a permis de valider ma capacité à concevoir une
+                        application logicielle évolutive répondant à des besoins utilisateurs précis (jouabilité,
+                        fluidité des animations).</p>
                     <a href="projets/Pokemon-tcg-ihm.html" class="btn small">Voir la preuve (Pokémon)</a>
                 </article>
             </div>
