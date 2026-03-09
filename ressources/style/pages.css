@@ -1,0 +1,323 @@
+/* ==========================================================================
+   PAGE-SPECIFIC STYLES, THEMES & SECTIONS
+   ========================================================================== */
+
+/* --- HOME PAGE HERO (Original lines 543-615) --- */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    padding-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/hero_bg.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.hero-right {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    background: rgba(18, 16, 14, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 60px;
+    position: relative;
+    max-width: 800px;
+    width: 100%;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.hero-content::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg,
+            var(--amber),
+            var(--green-phosphor),
+            var(--amber));
+    border-radius: var(--border-radius);
+    z-index: -1;
+    opacity: 0.3;
+    filter: blur(8px);
+}
+
+/* --- HOME SECTIONS (Original lines 725-1180) --- */
+.about,
+.projects,
+.contact {
+    padding: 100px 10%;
+    background: var(--bg-dark);
+    position: relative;
+}
+
+.about-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-photo img {
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--amber);
+}
+
+.about-content h2 {
+    font-family: 'VT323', monospace;
+    font-size: 3rem;
+    color: var(--amber);
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.about-content h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--amber), var(--aqua), var(--amber));
+    box-shadow: 0 0 10px var(--amber);
+}
+
+/* Roadmap Styles */
+.roadmap-container {
+    padding: 100px 2rem 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.roadmap-container .timeline::before {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.roadmap-container .timeline-item {
+    width: 100%;
+    margin-bottom: 60px;
+    position: relative;
+    display: flex;
+}
+
+.roadmap-container .timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 5px;
+    margin-left: -7px;
+    width: 14px;
+    height: 14px;
+    background: var(--bg-dark);
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+    z-index: 5;
+    box-shadow: 0 0 15px var(--amber);
+}
+
+.roadmap-container .timeline-content {
+    width: 42%;
+    padding: 25px;
+    background: rgba(30, 25, 20, 0.7);
+    border: 1px solid rgba(255, 182, 66, 0.2);
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(8px);
+    transition: all 0.4s ease;
+}
+
+.roadmap-container .timeline-item:nth-child(odd) {
+    justify-content: flex-start;
+}
+
+.roadmap-container .timeline-item:nth-child(even) {
+    justify-content: flex-end;
+}
+
+/* Contact Section */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.contact-info {
+    background: var(--bg-dark);
+    padding: 50px;
+    border-radius: var(--border-radius);
+    box-shadow: inset 0 0 0 2px rgba(94, 201, 165, 0.3), 0 0 30px rgba(94, 201, 165, 0.2);
+}
+
+/* Projects Section */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+.card {
+    background: var(--bg-light);
+    border: 1px solid rgba(230, 225, 207, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+}
+
+.card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--amber), 0 0 25px rgba(255, 182, 66, 0.2);
+    border-color: var(--amber);
+}
+
+.card-img {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img img {
+    transform: scale(1.1);
+}
+
+/* --- PROJECT PAGE STYLES (Original lines 1417-1525) --- */
+.project-page {
+    padding: 150px 10% 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.project-header h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.project-subtitle {
+    font-size: 1.5rem;
+    color: var(--aqua);
+    margin-bottom: 30px;
+}
+
+/* --- THEMES (Original lines 1990-2221, 2514-2597, 2657-2733, 2924-3011) --- */
+.pokemon-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #4a0000 100%) !important;
+    border: 1px solid #b22222 !important;
+}
+
+.pokemon-card h3 {
+    color: #ff4d4d !important;
+}
+
+.rs-manager-card {
+    background: linear-gradient(135deg, #0d1b2b 0%, #002a66 100%) !important;
+    border: 1px solid #224f9a !important;
+}
+
+.privalis-card {
+    background: linear-gradient(135deg, #0d2b2b 0%, #004a4a 100%) !important;
+    border: 1px solid #229a9a !important;
+}
+
+.c2-card {
+    background: linear-gradient(135deg, #121212 0%, #333 100%) !important;
+    border: 1px solid #eee !important;
+}
+
+/* --- SKILLS PAGE (Portfolio d'Apprentissage) (Original lines 3166-3483) --- */
+.pa-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+}
+
+.pa-section-title {
+    font-family: 'VT323', monospace;
+    font-size: 2.2rem;
+    color: var(--amber);
+    margin: 60px 0 25px;
+    border-bottom: 2px solid var(--amber);
+}
+
+.pa-ref-item {
+    background: rgba(18, 16, 14, 0.6);
+    border: 1px solid var(--bg-light);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.pa-ref-summary {
+    padding: 18px 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: bold;
+}
+
+.pa-ref-body {
+    padding: 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    border-top: 1px solid rgba(255, 182, 66, 0.1);
+}
+
+.pa-project-card {
+    background: rgba(30, 30, 30, 0.4);
+    border: 1px solid var(--bg-light);
+    border-radius: 12px;
+    padding: 35px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 950px) {
+    .pa-ref-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .pa-container {
+        padding: 20px 20px 60px;
+    }
+}

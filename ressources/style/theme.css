@@ -1,0 +1,46 @@
+/* ==========================================================================
+   DESIGN TOKENS & VARIABLES
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&display=swap');
+
+:root {
+    /* Fallout / Retro-Futurist 60s Palette */
+    /* Warm dark bakground (Vacuum tube init) */
+    --bg-dark: #12100e;
+    --bg-light: #24201b;
+
+    /* Pip-Boy Amber & Teal (softer than green) */
+    --amber: #ffb642;
+    --green-phosphor: #5ec9a5;
+    /* Softer teal instead of bright green */
+
+    /* Secondary accents */
+    --off-white: #e6e1cf;
+    --muted-brown: #5d4e3e;
+
+    /* Mapping to functional vars */
+    --fg: var(--off-white);
+    --primary: var(--amber);
+    --highlight: var(--green-phosphor);
+
+    /* Keeping some variety but focused */
+    --red: #ff4433;
+    --blue: #4488ff;
+
+    /* Map old variables to new palette */
+    --yellow: var(--amber);
+    --orange: #ff8833;
+    --aqua: var(--green-phosphor);
+    --green: var(--green-phosphor);
+    --purple: #d88fd8;
+
+    --glass: rgba(255, 182, 66, 0.05);
+    /* Amber glass */
+    --scanline-color: rgba(20, 15, 10, 0.5);
+
+    --border-radius: 12px;
+    /* Tech card subtle border color used across cards */
+    --tech-card-border: var(--bg-light);
+    /* Diagram container background (outer) — use tech card gray */
+    --diagram-container-bg: var(--tech-card-border);
+}
