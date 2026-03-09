@@ -34,6 +34,10 @@
 
         <main class="project-page">
             <div class="project-header">
+                <div class="project-logo-container">
+                    <img src="../ressources/images/privalis_logo_official.png" alt="Privalis Logo"
+                        class="project-logo-large">
+                </div>
                 <h1>Projet Privalis</h1>
                 <p class="project-subtitle">Système d'Enchères Sécurisé & Architecture Réflexive</p>
                 <div class="project-meta">
@@ -42,9 +46,10 @@
                     <span class="meta-item"><strong>Product Owner :</strong> <strong>BAERT Thomas</strong></span>
                     <span class="meta-item"><strong>Équipe :</strong> BAERT Thomas, FUCHS Théo, LORENZO Eden, PESENTI
                         Lillian, TRIOLEYRE Nathan</span>
-                    <span class="meta-item"><strong>Status :</strong> Final Sprint (En cours)</span>
-                    <span class="meta-item"><strong>Technologies :</strong> Java 21, Oracle SQL, SSL/TLS, RSA,
-                        JSON-RPC</span>
+                    <span class="meta-item"><strong>Status :</strong> Phase 2 : Restructuration, Sécurité & Docker (En
+                        cours)</span>
+                    <span class="meta-item"><strong>Technologies :</strong> Java 21, Oracle SQL, Damgård-Jurik, Docker,
+                        JUnit, SSL/TLS, RSA, JSON-RPC</span>
                 </div>
             </div>
 
@@ -163,7 +168,31 @@
             </section>
 
             <section class="project-section">
-                <h2>Architecture du Serveur (Lead Dev)</h2>
+                <h2>Phase 2 : Restructuration & Industrialisation</h2>
+                <p>La seconde phase du projet se concentre sur la robustesse du système et la facilité de déploiement.
+                </p>
+                <div class="tech-stack">
+                    <div class="timeline-content">
+                        <h3>1. Conception & Tests à Grande Échelle</h3>
+                        <p>L'application a été restructurée selon les meilleures pratiques de conception logicielle.
+                            Pour garantir la fiabilité du système sous charge, nous avons mis en œuvre une suite de
+                            <strong>tests unitaires massifs (JUnit)</strong> et des tests d'intégration simulant des
+                            centaines d'enchérisseurs simultanés.
+                        </p>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>2. Déploiement Conteneurisé (Docker)</h3>
+                        <p>Pour simplifier l'installation et assurer la reproductibilité de l'environnement,
+                            l'intégralité du système (Serveur, Client, Base de données Oracle) est désormais
+                            <strong>conteneurisée via Docker</strong>. Un simple <code>docker-compose up</code> permet
+                            de déployer l'infrastructure complète.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2>Architecture du Serveur</h2>
                 <p>Le serveur est le pivot central du projet. J'en ai conçu l'intégralité du socle technique selon un
                     modèle de haute performance et de sécurité.</p>
 
@@ -174,6 +203,12 @@
                             (if/else), j'ai mis en place un <strong>Routeur Dynamique</strong>. Ce dernier identifie le
                             contrôleur et l'action à exécuter à partir du JSON pour invoquer la logique associée via une
                             référence de méthode.</p>
+                        <p><strong>Automatisation Quartz :</strong> Le serveur s'appuie depuis la Phase 1 sur le
+                            scheduler
+                            <strong>Quartz</strong> pour automatiser l'ouverture et la fermeture des sessions d'enchères
+                            à la milliseconde près, garantissant une intégrité temporelle absolue sans intervention
+                            humaine.
+                        </p>
                         <div class="code-snippet-img">
                             <pre><code class="language-java">// Dans Routeur.java - Recherche dynamique de l'action
 private static Function&lt;JSONObject, JSONObject&gt; getMethod(JSONObject json) {
@@ -202,7 +237,8 @@ private static Function&lt;JSONObject, JSONObject&gt; getMethod(JSONObject json)
                         <h3>2. Gestion Multithread & BufferSortie</h3>
                         <p>Dans un environnement socket, l'envoi de messages est une opération bloquante. J'ai créé la
                             classe <code>BufferSortie</code> pour implémenter un modèle
-                            <strong>Producteur/Consommateur</strong> thread-safe.
+                            <strong>Producteur/Consommateur</strong> thread-safe s'appuyant sur des
+                            <code>CompletableFuture</code>.
                         </p>
                         <div class="code-snippet-img">
                             <pre><code class="language-java">// Dans BufferSortie.java - Synchronisation via Future
@@ -305,25 +341,28 @@ public void run() {
             <section class="project-section">
                 <h2>Le Protocole Vickrey pas à pas (DSS)</h2>
                 <div class="project-image-container">
-                    <img src="../ressources/images/dss-privalis.png"
+                    <img src="../ressources/images/dss-privalis-phase2.png"
                         alt="Diagramme de Séquence Système du protocole Vickrey" class="project-img">
-                    <p class="img-caption">Visualisation du protocole de sécurité complet implémenté.</p>
+                    <p class="img-caption">Visualisation du nouveau protocole de sécurité homomorphe implémenté.</p>
                 </div>
 
                 <div class="tech-stack">
                     <div class="timeline-content">
-                        <h3>Phase 1 : Le Broadcast Vérifié</h3>
-                        <p>Comment savoir si le serveur n'a pas triché sur la liste des enchères reçues ? Le serveur
-                            trie les chiffrés par <strong>ordre lexicographique</strong> et signe l'ensemble. Les
-                            clients reçoivent ce broadcast et vérifient que leur hash <code>ci</code> est présent. Si un
-                            client manque à l'appel, il le signale immédiatement.</p>
+                        <h3>Phase 1 : Enchère Homomorphe</h3>
+                        <p>L'enchérisseur encode son prix <code>bi</code> et le chiffre via le protocole de
+                            <strong>Damgård-Jurik</strong> : <code>ci = Enc(B^bi ; ri) mod N^s+1</code>. Le serveur (S)
+                            recueille ces chiffrés sans pouvoir les lire et calcule le produit homomorphe
+                            <code>c = Π ci</code>. Cette propriété permet d'agréger les offres tout en préservant le
+                            secret total.
+                        </p>
                     </div>
                     <div class="timeline-content">
-                        <h3>Phase 2 : La Levée du Secret</h3>
-                        <p>L'Autorité déchiffre tout, calcule le second prix <code>X2</code> et signe le résultat final.
-                            Le serveur transmet cette preuve. La signature <code>z'</code> permet à chaque client de
-                            s'assurer que l'Autorité a bien travaillé sur les mêmes données que celles validées en Phase
-                            1.</p>
+                        <h3>Phase 2 : Ouverture & Autorité</h3>
+                        <p>L'Autorité (A) reçoit le produit <code>c</code>, vérifie la signature globale du serveur, et
+                            utilise sa clé secrète pour déchiffrer. Grâce à la structure mathématique
+                            <code>(1+N)^m</code> du protocole Damgård-Jurik, l'Autorité peut extraire le second prix
+                            <code>p2</code> sans jamais avoir eu accès aux offres individuelles originales.
+                        </p>
                     </div>
                 </div>
             </section>
