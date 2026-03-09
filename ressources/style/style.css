@@ -2963,3 +2963,40 @@ pre[class*="language-"] {
     margin-top: 15px;
     border-color: var(--tech-card-border);
 }
+
+/* Tech Table Styling for Reports */
+.tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.95rem;
+    border: 1px solid rgba(230, 225, 207, 0.1);
+    background: rgba(18, 16, 14, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.tech-table th {
+    background: rgba(255, 182, 66, 0.1);
+    color: var(--amber);
+    text-align: left;
+    padding: 15px;
+    border-bottom: 2px solid var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tech-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(230, 225, 207, 0.05);
+    color: var(--fg);
+}
+
+.tech-table tr:nth-child(even) {
+    background: rgba(230, 225, 207, 0.02);
+}
+
+.tech-table tr:hover {
+    background: rgba(94, 201, 165, 0.05);
+}

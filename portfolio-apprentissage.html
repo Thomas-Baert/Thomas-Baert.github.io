@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Portfolio d'Apprentissage — Thomas BAERT</title>
+    <link rel="stylesheet" href="ressources/style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="crt-container">
+        <div class="scanlines"></div>
+        <header class="site-header">
+            <nav class="nav">
+                <a href="/">
+                    <div class="brand">Thomas BAERT — Portfolio</div>
+                </a>
+                <div class="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#work">Projets</a></li>
+                    <li><a href="index.html#about">À propos</a></li>
+                    <li><a href="portfolio-apprentissage.html" class="active">Compétences</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="project-page">
+            <div class="project-header">
+                <h1>Portfolio d'Apprentissage</h1>
+                <p class="project-subtitle">Référentiel de Compétences BUT Informatique — Niveau 2</p>
+            </div>
+
+            <section class="project-section">
+                <h2>Parcours B : DACS</h2>
+                <p>Mon parcours de spécialisation en <strong>Développement d'Applications Communicantes et Sécurisées
+                        (DACS)</strong> met l'accent sur l'architecture logicielle, la sécurité réseau et le
+                    déploiement. Voici l'analyse de ma progression sur les compétences transversales de niveau 2.</p>
+            </section>
+
+            <div class="tech-stack">
+                <!-- Compétence 1 -->
+                <article class="tech-card">
+                    <h3>Compétence : Gérer des données</h3>
+                    <p class="timeline-date">Niveau 2 : Optimiser l'exploitation d'une base de données</p>
+                    <p>Dans le <strong>Projet Privalis</strong> (S3-S4), j'ai dû concevoir un schéma relationnel
+                        complexe sous Oracle pour gérer les enchères, les utilisateurs et l'Autorité. J'ai optimisé les
+                        requêtes via un <strong>Custom ORM</strong> et utilisé des déclencheurs SQL pour assurer
+                        l'intégrité des données même lors d'agrégations homomorphes.</p>
+                    <a href="projets/privalis.html" class="btn small">Voir la preuve (Privalis)</a>
+                </article>
+
+                <!-- Compétence 2 -->
+                <article class="tech-card">
+                    <h3>Compétence : Optimiser des solutions informatiques</h3>
+                    <p class="timeline-date">Niveau 2 : Évaluation des performances et choix algorithmiques</p>
+                    <p>Le projet <strong>C2 Network</strong> illustre cette compétence à travers le choix du
+                        <strong>Gossip Protocol</strong>. J'ai analysé la complexité du routage par propagation pour
+                        minimiser le nombre de messages tout en maximisant la couverture réseau (fanout vs TTL),
+                        garantissant une performance stable sur un graphe décentralisé.</p>
+                    <a href="projets/c2-network.html" class="btn small">Voir la preuve (C2 Network)</a>
+                </article>
+
+                <!-- Compétence 3 -->
+                <article class="tech-card">
+                    <h3>Compétence : Concevoir des solutions logicielles</h3>
+                    <p class="timeline-date">Niveau 2 : Application de patterns et architecture n-tiers</p>
+                    <p>Pour le projet <strong>Pokémon TCG IHM</strong>, j'ai mis en place une architecture <strong>MVC
+                            asynchrone</strong> stricte sous JavaFX. La séparation des responsabilités entre la logique
+                        métier complexe et les composants graphiques auto-gérés m'a permis de construire une solution
+                        modulaire et évolutive.</p>
+                    <a href="projets/Pokemon-tcg-ihm.html" class="btn small">Voir la preuve (Pokémon)</a>
+                </article>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <p>© 2025 — Thomas BAERT. Referentiel BUT Informatique.</p>
+        </footer>
+    </div>
+    <script src="ressources/js/app.js"></script>
+</body>
+
+</html>

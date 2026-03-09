@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport Technique : C2 Distributed Network - Thomas BAERT</title>
+    <link rel="stylesheet" href="../ressources/style/style.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="crt-container">
+        <div class="scanlines"></div>
+
+        <header class="site-header">
+            <nav class="nav">
+                <a href="/">
+                    <div class="brand">Thomas BAERT — Portfolio</div>
+                </a>
+                <div class="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="../index.html#work">Projets</a></li>
+                    <li><a href="../index.html#about">À propos</a></li>
+                    <li><a href="../portfolio-apprentissage.html">Compétences</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="project-page">
+            <div class="project-header">
+                <h1>C2 Distributed Network</h1>
+                <p class="project-subtitle">Compte-rendu Technique : Architecture & Implémentation</p>
+                <div class="project-meta">
+                    <span class="meta-item"><strong>Contexte :</strong> Projet Personnel / DACS</span>
+                    <span class="meta-item"><strong>Rôle :</strong> Architecte & Développeur Lead</span>
+                    <span class="meta-item"><strong>Durée :</strong> 4 semaines</span>
+                    <span class="meta-item"><strong>Stack :</strong> Java 21, TLS 1.3, Gossip, Cryptographie</span>
+                </div>
+            </div>
+
+            <!-- Introduction Section -->
+            <section class="project-section">
+                <h2>Présentation Générale</h2>
+                <div class="timeline-content">
+                    <p>Ce projet consiste en la conception et l'implémentation d'un <strong>réseau de commande et de
+                            contrôle (C2) distribué</strong>. L'objectif principal est de s'affranchir d'un serveur
+                        central vulnérable (Single Point of Failure) au profit d'un <strong>réseau overlay
+                            décentralisé</strong> résilient.</p>
+                    <p>Le système assure une communication sécurisée, la découverte dynamique de pairs (Peer Discovery)
+                        et un contrôle strict de l'admission des nœuds via un système de certificats signés par une
+                        racine de confiance.</p>
+                </div>
+            </section>
+
+            <!-- Technical Objectives -->
+            <section class="project-section">
+                <h2>Objectifs Techniques & Contraintes</h2>
+                <div class="tech-grid">
+                    <div class="timeline-content">
+                        <h3>Propriétés du Système</h3>
+                        <ul class="feature-list">
+                            <li><strong>Routage décentralisé :</strong> Messages propagés sans point de passage obligé.
+                            </li>
+                            <li><strong>Identité Durable :</strong> Chaque nœud dispose d'une identité cryptographique
+                                forte.</li>
+                            <li><strong>Admissibilité :</strong> Seuls les nœuds autorisés (certifiés) peuvent
+                                participer.</li>
+                            <li><strong>Résilience :</strong> Tolérance aux pannes et aux nœuds malveillants par
+                                redondance.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topology Section -->
+            <section class="project-section">
+                <h2>Architecture & Topologie</h2>
+                <div class="timeline-content">
+                    <p>Le réseau n'est pas un maillage complet (full mesh) mais un **graphe aléatoire partiel**. Chaque
+                        nœud maintient une table de pairs limitée (6 à 12 voisins), assurant une faible consommation de
+                        ressources tout en garantissant une connectivité globale élevée.</p>
+
+                    <div class="diagram-container">
+                        <h3>Topologie en Graphe Aléatoire</h3>
+                        <div class="mermaid-wrapper">
+                            <div class="mermaid">
+                                graph TD
+                                A[Nœud A] --- B[Nœud B]
+                                A --- C[Nœud C]
+                                B --- D[Nœud D]
+                                C --- D[Nœud D]
+                                C --- E[Nœud E]
+                                D --- F[Nœud F]
+                                E --- F[Nœud F]
+                                style A fill:#ffb642,stroke:#000
+                                style F fill:#5ec9a5,stroke:#000
+                            </div>
+                        </div>
+                        <p class="img-caption">Visualisation d'une portion du réseau overlay avec chemins redondants.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Provisioning Section -->
+            <section class="project-section">
+                <h2>Modèle d'Admission & Provisioning</h2>
+                <div class="timeline-content">
+                    <p>Pour garantir que seuls des nœuds de confiance rejoignent l'overlay, le système utilise un
+                        <strong>modèle de provisioning offline</strong>. Contrairement au Web classique, il n'y a pas de
+                        CA en ligne ; la confiance est établie lors de la création du nœud.</p>
+
+                    <div class="tech-stack">
+                        <div class="tech-card">
+                            <h4>Flux de Provisioning</h4>
+                            <ol class="feature-list">
+                                <li>Génération locale d'un bi-clés (RSA-4096).</li>
+                                <li>Signature du certificat par la <code>Root Key</code> hors-ligne.</li>
+                                <li>Injection du pack (Clé privée + Certificat + Root PubKey) dans le nœud.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px;">Ce mécanisme élimine les dépendances aux serveurs de noms ou aux
+                        autorités de certification tierces, renforçant l'aspect "furtif" et autonome du réseau.</p>
+                </div>
+            </section>
+
+            <!-- Security Model -->
+            <section class="project-section">
+                <h2>Modèle de Sécurité (DACS)</h2>
+                <div class="timeline-content">
+                    <p>Conformément au parcours DACS, la sécurité est intégrée dès la conception (Security by Design).
+                        Tout échange est protégé par **TLS 1.3** avec <strong>authentification mutuelle (mTLS)</strong>.
+                    </p>
+
+                    <table class="tech-table">
+                        <thead>
+                            <tr>
+                                <th>Menace</th>
+                                <th>Mécanisme de Défense</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Interception (MITM)</td>
+                                <td>Chiffrement TLS 1.3 forcé sur chaque lien.</td>
+                            </tr>
+                            <tr>
+                                <td>Usurpation d'Identité</td>
+                                <td>Certificats pré-signés par une racine de confiance locale.</td>
+                            </tr>
+                            <tr>
+                                <td>Nœud Compromis</td>
+                                <td>Propagation de listes de révocation signées (REVOKE_CERT).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="timeline-content">
+                    <h3>Identité Cryptographique</h3>
+                    <p>L'identité d'un nœud (Node ID) est le résultat d'un hachage <strong>SHA256</strong> de sa clé
+                        publique, rendant toute usurpation impossible sans la clé privée correspondante.</p>
+                </div>
+            </section>
+
+            <!-- Protocols & Messages -->
+            <section class="project-section">
+                <h2>Protocole de Communication</h2>
+                <div class="timeline-content">
+                    <p>Le protocole binaire est structuré pour être léger et extensible. Chaque paquet partage une
+                        en-tête commune.</p>
+
+                    <div class="code-block-wrapper">
+                        <pre><code class="language-java">// Structure simplifiée de l'en-tête (Header)
+public class MessageHeader {
+    UUID messageId;      // Identifiant unique (détection de doublons)
+    MessageType type;    // PING, PONG, SYN, ACK, REVOKE
+    int ttl;             // Time To Live pour limiter la propagation
+    long timestamp;      // Horodatage pour la validité temporelle
+    byte[] signature;    // Signature par le nœud émetteur
+}</code></pre>
+                    </div>
+
+                    <h3>Types de Messages Clés</h3>
+                    <div class="tech-grid">
+                        <article class="tech-card">
+                            <h4>PING / PONG</h4>
+                            <p>Utilisés pour la découverte de pairs. Le PONG renvoie une liste de voisins connus pour
+                                permettre au nouvel entrant de tisser ses liens.</p>
+                        </article>
+                        <article class="tech-card">
+                            <h4>SYN / ACK</h4>
+                            <p>Messages de données et de contrôle avec acquittement, assurant la fiabilité applicative
+                                sur le réseau TCP.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Algorithms Section -->
+            <section class="project-section">
+                <h2>Algorithmes & Propagation</h2>
+                <div class="timeline-content">
+                    <p>La diffusion des informations repose sur le <strong>Gossip Routing (Fanout Routing)</strong>.
+                        Lorsqu'un nœud reçoit un message inconnu, il le relaie à une sélection aléatoire de voisins
+                        (fanout=3) jusqu'à épuisement du TTL.</p>
+
+                    <div class="diagram-container">
+                        <h3>Séquence de Découverte (Bootstrap)</h3>
+                        <div class="mermaid-wrapper">
+                            <div class="mermaid">
+                                sequenceDiagram
+                                participant N as Nouveau Nœud
+                                participant B as Nœud Bootstrap
+                                participant P as Pairs Découverts
+
+                                N->>B: PING (Handshake TLS)
+                                B-->>N: PONG (Liste de Peers : C, D, E)
+                                Note over N: Mise à jour Table de Pairs
+                                N->>P: PING (Établissement liens)
+                                P-->>N: ACK / PONG
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Implementation Phases -->
+            <section class="project-section">
+                <h2>Phases de Réalisation</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Phase 1 : Socle Réseau & TLS</h3>
+                            <p>Mise en place du serveur TCP et de la couche SSLContext. Gestion des KeyManagers et
+                                TrustManagers pour l'authentification mutuelle.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Phase 2 : Protocole & Sérialisation</h3>
+                            <p>Définition de la structure des paquets et implémentation de la sérialisation binaire
+                                efficace. Gestion des files d'attente asynchrones.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>Phase 3 : Routage Gossip</h3>
+                            <p>Implémentation de l'algorithme de propagation probabiliste et de la détection de cycles
+                                (via le cache des MessageIDs).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills & Conclusion -->
+            <section class="project-section">
+                <h2>Compétences & Bilan</h2>
+                <div class="tech-grid">
+                    <div class="timeline-content">
+                        <h3>Savoir-faire (Technique)</h3>
+                        <ul>
+                            <li>Programmation Réseau avancée (Sockets, TLS, NIO).</li>
+                            <li>Architecture de systèmes distribués et protocoles P2P.</li>
+                            <li>Implémentation de primitives cryptographiques (Signatures, Hachages).</li>
+                        </ul>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Savoir-être (Soft Skills)</h3>
+                        <ul>
+                            <li><strong>Rigueur :</strong> Gestion fine des états de connexion et des exceptions réseau.
+                            </li>
+                            <li><strong>Autonomie :</strong> Recherche documentaire sur les protocoles Gossip et les
+                                topologies de graphes.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-content" style="margin-top:20px;">
+                    <p>Ce projet démontre ma capacité à concevoir et réaliser une <strong>infrastructure critique
+                            sécurisée</strong> de A à Z, en respectant les standards de l'industrie en matière de
+                        cryptographie et de réseau.</p>
+                </div>
+            </section>
+
+            <div class="project-footer">
+                <a href="../index.html#work" class="btn">← Retour aux projets</a>
+                <a href="../portfolio-apprentissage.html" class="btn ghost">Compétences BUT</a>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <p>© 2025 — Thomas BAERT. Distributed Systems Architecture.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            themeVariables: {
+                primaryColor: '#ffb642',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffb642',
+                lineColor: '#5ec9a5',
+                secondaryColor: '#5ec9a5',
+                tertiaryColor: '#12100e'
+            }
+        });
+    </script>
+    <script src="../ressources/js/app.js"></script>
+</body>
+
+</html>
