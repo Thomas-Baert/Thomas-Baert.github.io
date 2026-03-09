@@ -781,10 +781,10 @@ h1 {
 
 /* Roadmap Timeline */
 .roadmap-container {
-    margin-top: 100px;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 100px 2rem 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    scroll-margin-top: 80px;
     position: relative;
     padding-bottom: 50px;
 }
@@ -1400,10 +1400,6 @@ h1 {
 @media (max-width: 400px) {
     h1 {
         font-size: 1.8rem;
-    }
-
-    .brand {
-        font-size: 1.2rem;
     }
 }
 
@@ -2212,6 +2208,30 @@ h1 {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.5) !important;
 }
 
+/* Responsive Mermaid & Diagrams */
+.mermaid-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 15px 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mermaid {
+    min-width: 500px;
+    /* Force minimum width to keep text readable on mobile */
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+    .mermaid {
+        min-width: 450px;
+    }
+}
+
 /* Summary Modal Styles */
 .summary-modal {
     display: none;
@@ -2228,17 +2248,13 @@ h1 {
 }
 
 .summary-container {
-    background: var(--bg-dark);
+    background: #121212;
     width: 90%;
-    max-width: 600px;
+    max-width: 800px;
+    border: 1px solid #ffb642;
+    border-radius: 4px;
+    overflow-y: auto;
     max-height: 90vh;
-    border: 2px solid var(--aqua);
-    box-shadow: 0 0 30px rgba(94, 201, 165, 0.3);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    flex-direction: column;
     animation: modalSlide 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
@@ -2663,17 +2679,20 @@ pre[class*="language-"] {
 
 /* White Theme for Summary Modal (C2 Network) */
 .summary-container.theme-white {
-    border-color: #eee;
+    background: #121212 !important;
+    /* Keep container dark for contrast, but borders/accents white */
+    border-color: #fff !important;
     box-shadow: 0 0 35px rgba(255, 255, 255, 0.2);
 }
 
 .summary-container.theme-white .summary-banner {
-    background: linear-gradient(135deg, #121212 0%, #333 100%);
+    background: linear-gradient(135deg, #222 0%, #444 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .summary-container.theme-white h2 {
-    color: #fff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    color: #fff !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 .summary-container.theme-white .summary-close {
